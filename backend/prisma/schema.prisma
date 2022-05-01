@@ -1,0 +1,172 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model appointments {
+  customer Int?
+  date     DateTime  @db.DateTime(0)
+  official Int
+  note     String?   @db.VarChar(255)
+  citizens citizens? @relation(fields: [customer], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "appointments_ibfk_1")
+  worker   worker    @relation(fields: [official], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "appointments_ibfk_2")
+
+  @@id([date, official])
+  @@index([customer], map: "customer")
+  @@index([official], map: "official")
+}
+
+model blogEntry {
+  id        Int      @id
+  adddate   DateTime @db.Timestamp(0)
+  type      Int?
+  target    String?  @db.VarChar(255)
+  descr     String   @db.Text
+  imagePath String?  @db.VarChar(255)
+}
+
+model citizens {
+  id                                 Int            @id
+  lastname                           String         @db.VarChar(255)
+  name                               String         @db.VarChar(255)
+  email                              String?        @db.VarChar(255)
+  birthday                           DateTime?      @db.Timestamp(0)
+  appointments                       appointments[]
+  companies                          companies[]
+  couples_citizensTocouples_partner1 couples[]      @relation("citizensTocouples_partner1")
+  couples_citizensTocouples_partner2 couples[]      @relation("citizensTocouples_partner2")
+  donation                           donation[]
+  income                             income[]
+  process                            process[]
+  worker                             worker?
+}
+
+model companies {
+  id       Int        @id
+  name     String     @db.VarChar(255)
+  rep      Int
+  citizens citizens   @relation(fields: [rep], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "companies_ibfk_1")
+  donation donation[]
+
+  @@index([rep], map: "rep")
+}
+
+model contactrequest {
+  id      Int     @id @default(autoincrement())
+  name    String  @db.VarChar(255)
+  email   String? @db.VarChar(255)
+  message String  @db.Text
+}
+
+model couples {
+  partner1                            Int
+  partner2                            Int
+  child_amount                        Int
+  date                                DateTime @db.Timestamp(0)
+  citizens_citizensTocouples_partner1 citizens @relation("citizensTocouples_partner1", fields: [partner1], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "couples_ibfk_1")
+  citizens_citizensTocouples_partner2 citizens @relation("citizensTocouples_partner2", fields: [partner2], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "couples_ibfk_2")
+
+  @@id([partner1, partner2, date])
+  @@index([partner2], map: "partner2")
+}
+
+model donation {
+  amount    Int
+  recipiant Int
+  donator   Int
+  date      DateTime  @db.Timestamp(0)
+  reason    String?   @db.VarChar(255)
+  purpose   String?   @db.VarChar(255)
+  citizens  citizens  @relation(fields: [donator], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "donation_ibfk_2")
+  companies companies @relation(fields: [recipiant], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "donation_ibfk_1")
+
+  @@id([amount, recipiant, donator, date])
+  @@index([donator], map: "donator")
+  @@index([recipiant], map: "recipiant")
+}
+
+model file {
+  id                    Int      @id
+  path                  String   @db.VarChar(255)
+  date                  DateTime @db.Timestamp(0)
+  process               Int?
+  process_fileToprocess process? @relation(fields: [process], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "file_ibfk_1")
+
+  @@index([process], map: "process")
+}
+
+model forms {
+  id      Int      @id
+  path    String?  @db.VarChar(255)
+  adddate DateTime @db.Timestamp(0)
+  type    Int?
+  target  String?  @db.VarChar(255)
+  descr   String   @db.VarChar(255)
+}
+
+model income {
+  recipiant Int
+  amount    Int
+  descr     String?  @db.VarChar(255)
+  date      DateTime @db.Timestamp(0)
+  citizens  citizens @relation(fields: [recipiant], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "income_ibfk_1")
+
+  @@id([recipiant, amount, date])
+}
+
+model note {
+  process               Int
+  text                  String   @db.Text
+  fromUser              Boolean
+  date                  DateTime @db.Timestamp(0)
+  process_noteToprocess process  @relation(fields: [process], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "note_ibfk_1")
+
+  @@id([process, fromUser, date])
+}
+
+model process {
+  id            Int             @id
+  type          Int
+  date          DateTime        @db.Timestamp(0)
+  customer      Int?
+  official      Int?
+  citizens      citizens?       @relation(fields: [customer], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "process_ibfk_1")
+  worker        worker?         @relation(fields: [official], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "process_ibfk_2")
+  processTypes  processTypes    @relation(fields: [type], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "process_ibfk_3")
+  file          file[]
+  note          note[]
+  statusUpdates statusUpdates[]
+
+  @@index([customer], map: "customer")
+  @@index([official], map: "official")
+  @@index([type], map: "type")
+}
+
+model processTypes {
+  id          Int       @id
+  name        String    @db.VarChar(255)
+  description String    @db.Text
+  process     process[]
+}
+
+model statusUpdates {
+  process                        Int
+  status                         Int
+  date                           DateTime @db.Timestamp(0)
+  process_processTostatusUpdates process  @relation(fields: [process], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "statusUpdates_ibfk_1")
+
+  @@id([process, status])
+}
+
+model worker {
+  id           Int            @id
+  sign         String         @db.VarChar(255)
+  admin        Boolean
+  citizens     citizens       @relation(fields: [id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "worker_ibfk_1")
+  appointments appointments[]
+  process      process[]
+}

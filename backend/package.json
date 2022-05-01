@@ -1,0 +1,24 @@
+{
+  "name": "finanzamt-backend",
+  "version": "1.0.0",
+  "description": "The backend for the Finanzamt",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "^3.12.0",
+    "connect-history-api-fallback": "^1.6.0",
+    "cors": "^2.8.5",
+    "express": "^4.18.0",
+    "multer": "^1.4.4",
+    "node-cron": "^3.0.0",
+    "uuidv4": "^6.2.13"
+  },
+  "devDependencies": {
+    "prisma": "^3.12.0"
+  }
+}
