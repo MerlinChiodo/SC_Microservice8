@@ -43,10 +43,11 @@ app.use('/api/contactRequest', contactRequest)
 app.use('/api/operations', operations)
 app.use('/api/files', files)
 
-// Deliver static files from directory 'public'
-app.use(express.static('public'));
 // Use history for delivering Vue.js 
 app.use(history());
+// Deliver static files from directory 'public'
+app.use(express.static('public'));
+
 app.listen(port, () => {
   console.log(`Finanzamt-backend listening at http://localhost:${port}`);
 });
