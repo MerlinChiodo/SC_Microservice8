@@ -9,7 +9,7 @@ datasource db {
 
 model appointments {
   customer Int?
-  date     DateTime  @db.DateTime(0)
+  date     DateTime  @default(now()) @db.DateTime(0)
   official Int
   note     String?   @db.VarChar(255)
   citizens citizens? @relation(fields: [customer], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "appointments_ibfk_1")
@@ -22,7 +22,7 @@ model appointments {
 
 model blogEntry {
   id        Int      @id
-  adddate   DateTime @db.Timestamp(0)
+  adddate   DateTime @default(now()) @db.Timestamp(0)
   type      Int?
   target    String?  @db.VarChar(255)
   descr     String   @db.Text
@@ -56,17 +56,18 @@ model companies {
 }
 
 model contactrequest {
-  id      Int     @id @default(autoincrement())
-  name    String  @db.VarChar(255)
-  email   String? @db.VarChar(255)
-  message String  @db.Text
+  id      Int      @id @default(autoincrement())
+  name    String   @db.VarChar(255)
+  email   String?  @db.VarChar(255)
+  message String   @db.Text
+  date    DateTime @default(now()) @db.Timestamp(0)
 }
 
 model couples {
   partner1                            Int
   partner2                            Int
   child_amount                        Int
-  date                                DateTime @db.Timestamp(0)
+  date                                DateTime @default(now()) @db.Timestamp(0)
   citizens_citizensTocouples_partner1 citizens @relation("citizensTocouples_partner1", fields: [partner1], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "couples_ibfk_1")
   citizens_citizensTocouples_partner2 citizens @relation("citizensTocouples_partner2", fields: [partner2], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "couples_ibfk_2")
 
@@ -78,7 +79,7 @@ model donation {
   amount    Int
   recipiant Int
   donator   Int
-  date      DateTime  @db.Timestamp(0)
+  date      DateTime  @default(now()) @db.Timestamp(0)
   reason    String?   @db.VarChar(255)
   purpose   String?   @db.VarChar(255)
   citizens  citizens  @relation(fields: [donator], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "donation_ibfk_2")
@@ -90,9 +91,8 @@ model donation {
 }
 
 model file {
-  id                    Int      @id
-  path                  String   @db.VarChar(255)
-  date                  DateTime @db.Timestamp(0)
+  path                  String   @id @db.VarChar(255)
+  date                  DateTime @default(now()) @db.Timestamp(0)
   process               Int?
   process_fileToprocess process? @relation(fields: [process], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "file_ibfk_1")
 
@@ -100,19 +100,19 @@ model file {
 }
 
 model forms {
-  id      Int      @id
-  path    String?  @db.VarChar(255)
-  adddate DateTime @db.Timestamp(0)
+  id      Int       @id
+  path    String?   @db.VarChar(255)
+  adddate DateTime? @default(now()) @db.Timestamp(0)
   type    Int?
-  target  String?  @db.VarChar(255)
-  descr   String   @db.VarChar(255)
+  target  String?   @db.VarChar(255)
+  descr   String    @db.VarChar(255)
 }
 
 model income {
   recipiant Int
   amount    Int
   descr     String?  @db.VarChar(255)
-  date      DateTime @db.Timestamp(0)
+  date      DateTime @default(now()) @db.Timestamp(0)
   citizens  citizens @relation(fields: [recipiant], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "income_ibfk_1")
 
   @@id([recipiant, amount, date])
@@ -122,7 +122,7 @@ model note {
   process               Int
   text                  String   @db.Text
   fromUser              Boolean
-  date                  DateTime @db.Timestamp(0)
+  date                  DateTime @default(now()) @db.Timestamp(0)
   process_noteToprocess process  @relation(fields: [process], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "note_ibfk_1")
 
   @@id([process, fromUser, date])
@@ -131,7 +131,7 @@ model note {
 model process {
   id            Int             @id
   type          Int
-  date          DateTime        @db.Timestamp(0)
+  date          DateTime        @default(now()) @db.Timestamp(0)
   customer      Int?
   official      Int?
   citizens      citizens?       @relation(fields: [customer], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "process_ibfk_1")
@@ -156,7 +156,7 @@ model processTypes {
 model statusUpdates {
   process                        Int
   status                         Int
-  date                           DateTime @db.Timestamp(0)
+  date                           DateTime @default(now()) @db.Timestamp(0)
   process_processTostatusUpdates process  @relation(fields: [process], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "statusUpdates_ibfk_1")
 
   @@id([process, status])

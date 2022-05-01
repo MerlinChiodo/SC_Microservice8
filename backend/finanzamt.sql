@@ -14,7 +14,7 @@ CREATE TABLE `worker` (
 
 CREATE TABLE `appointments` (
   `customer` int,
-  `date` datetime NOT NULL,
+  `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `official` int NOT NULL,
   `note` varchar(255),
   PRIMARY KEY (`date`, `official`)
@@ -24,7 +24,7 @@ CREATE TABLE `couples` (
   `partner1` int NOT NULL,
   `partner2` int,
   `child_amount` int NOT NULL,
-  `date` timestamp NOT NULL,
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`partner1`, `partner2`, `date`)
 );
 
@@ -32,7 +32,7 @@ CREATE TABLE `donation` (
   `amount` int NOT NULL,
   `recipiant` int NOT NULL,
   `donator` int,
-  `date` timestamp NOT NULL,
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `reason` varchar(255),
   `purpose` varchar(255),
   PRIMARY KEY (`amount`, `recipiant`, `donator`, `date`)
@@ -41,7 +41,7 @@ CREATE TABLE `donation` (
 CREATE TABLE `process` (
   `id` int PRIMARY KEY NOT NULL,
   `type` int NOT NULL,
-  `date` timestamp NOT NULL,
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `customer` int,
   `official` int
 );
@@ -50,21 +50,20 @@ CREATE TABLE `note` (
   `process` int NOT NULL,
   `text` text NOT NULL,
   `fromUser` boolean NOT NULL,
-  `date` timestamp NOT NULL,
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`process`, `fromUser`, `date`)
 );
 
 CREATE TABLE `statusUpdates` (
   `process` int NOT NULL,
   `status` int NOT NULL,
-  `date` timestamp NOT NULL,
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`process`, `status`)
 );
 
 CREATE TABLE `file` (
-  `id` int PRIMARY KEY NOT NULL,
-  `path` varchar(255) NOT NULL,
-  `date` timestamp NOT NULL,
+  `path` varchar(255) PRIMARY KEY NOT NULL,
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `process` int
 );
 
@@ -72,7 +71,8 @@ CREATE TABLE `contactrequest` (
   `id` int PRIMARY KEY  NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   `email` varchar(255),
-  `message` text NOT NULL
+  `message` text NOT NULL,
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE `processTypes` (
@@ -84,7 +84,7 @@ CREATE TABLE `processTypes` (
 CREATE TABLE `forms` (
   `id` int PRIMARY KEY NOT NULL,
   `path` varchar(255),
-  `adddate` timestamp NOT NULL,
+  `adddate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `type` int,
   `target` varchar(255),
   `descr` varchar(255) NOT NULL
@@ -92,7 +92,7 @@ CREATE TABLE `forms` (
 
 CREATE TABLE `blogEntry` (
   `id` int PRIMARY KEY NOT NULL,
-  `adddate` timestamp NOT NULL,
+  `adddate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `type` int,
   `target` varchar(255),
   `descr` text NOT NULL,
@@ -103,7 +103,7 @@ CREATE TABLE `income` (
   `recipiant` int NOT NULL,
   `amount` int NOT NULL,
   `descr` varchar(255),
-  `date` timestamp NOT NULL,
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`recipiant`, `amount`, `date`)
 );
 
