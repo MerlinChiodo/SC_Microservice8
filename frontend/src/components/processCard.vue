@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
-    <h5 v-if="!sign">Steuerjahr {{jahr}}</h5>
-    <h5 v-else>Laufende Prozesse: Sacharbeiter {{sign}}</h5>
+    <h5 v-if="!sign">Steuerjahr {{year}}</h5>
+    <h5 v-else>Laufende Prozesse: Sachbearbeiter {{sign}}</h5>
     <div v-for="process in processes" :key="process.id" class="card mt-10 mb-10">
       <div class="row">
         <div class="col-sm">
@@ -48,7 +48,7 @@ export default {
       type: Array,
       required: true,
     },
-    jahr: {
+    year: {
       type: Number,
       required: true,
     },

@@ -1,13 +1,13 @@
 import { createWebHistory, createRouter } from "vue-router";
-import Home from "./components/home.vue";
-import Events from "./components/termine.vue"
-import News from "./components/aktuelles.vue"
-import Forms from "./components/formulare.vue"
-const Contact = () => import("./components/kontakt.vue")
-const Submit = () => import("./components/konto/einreichen.vue")
-const Operations = () => import("./components/konto/vorgaenge.vue")
+import Home from "./views/home.vue";
+import Events from "./views/events.vue"
+import News from "./views/blog.vue"
+import Forms from "./views/forms.vue"
+const Contact = () => import("./views/contact.vue")
+const Submit = () => import("./views/account/submit.vue")
+const Operations = () => import("./views/account/processes.vue")
 //Staff pages 
-const Internal_operations = () => import("./components/intern/vorgaenge.vue")
+const Internal_operations = () => import("./views/internal/processes.vue")
 const routes = [
   {
     path: "/",
