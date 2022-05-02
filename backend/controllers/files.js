@@ -1,7 +1,12 @@
+const {validationResult} = require('express-validator');
 const prisma = require('../prismaClient');
 const fs = require('fs')
 
 const uploadFile = async (req, res) => {
+    const errors = validationResult(req);
+    if(!errors.isEmpty()){
+        return res.status(422).json({ errors: errors.array()[0] });
+    }
     if(req.file !== undefined){
         // TODO: Check for ProcessID + Authentification
         const result = await prisma.file.create({
@@ -16,6 +21,10 @@ const uploadFile = async (req, res) => {
 }
 
 const getFile = async (req, res) => {
+    const errors = validationResult(req);
+    if(!errors.isEmpty()){
+        return res.status(422).json({ errors: errors.array()[0] });
+    }
     filename = req.params['fileUUID']
     path = "uploads/"+filename
     // TODO: Authentification
@@ -32,10 +41,18 @@ const getFile = async (req, res) => {
 }
 
 const getAllFiles = async (req,res) => {
+    const errors = validationResult(req);
+    if(!errors.isEmpty()){
+        return res.status(422).json({ errors: errors.array()[0] });
+    }
     // TODO: get all files of Process
 }
 
 const deleteFile = async (req, res) => {
+    const errors = validationResult(req);
+    if(!errors.isEmpty()){
+        return res.status(422).json({ errors: errors.array()[0] });
+    }
     filename = req.params['fileUUID']
     path = "uploads/"+filename
     // TODO: Authentification
