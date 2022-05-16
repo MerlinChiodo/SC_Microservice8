@@ -170,3 +170,10 @@ model worker {
   appointments appointments[]
   process      process[]
 }
+
+model faultyEvents {
+  id       Int      @id @default(autoincrement())
+  content  String   @db.Text
+  failTime DateTime @default(now()) @db.Timestamp(0)
+  eventId  Int
+}

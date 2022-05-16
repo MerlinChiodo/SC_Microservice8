@@ -113,6 +113,13 @@ CREATE TABLE `companies` (
   `rep` int NOT NULL
 );
 
+CREATE TABLE `faultyEvents` (
+  `id` int(11) PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  `content` text NOT NULL,
+  `failTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `eventId` int(11) NOT NULL
+);
+
 ALTER TABLE `appointments` ADD FOREIGN KEY (`customer`) REFERENCES `citizens` (`id`);
 
 ALTER TABLE `appointments` ADD FOREIGN KEY (`official`) REFERENCES `worker` (`id`);
