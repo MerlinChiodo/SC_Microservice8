@@ -17,7 +17,7 @@ const port = 3000;
 /**
  * Imports
  */
-const rabbitMQ = require('./controllers/rabbitMQ.js');
+const rabbitMQ = require('./controllers/rabbitMQ/rabbitMQReceive.js');
 const contactRequest = require('./routes/contactRequest.js')
 const operations = require('./routes/operations.js')
 const files = require('./routes/files.js')
