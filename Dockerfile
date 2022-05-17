@@ -1,6 +1,6 @@
 # Finanzamt uses Node and Vue
 # node:alpine is a slim Node installed linux vm
-FROM node:alpine
+FROM node:16-alpine
 
 # Create an application directories
 RUN mkdir -p /app/frontend
