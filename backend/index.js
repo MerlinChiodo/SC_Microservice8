@@ -25,7 +25,7 @@ const files = require('./routes/files.js')
 /**
  * Cronjobs
  */
-cron.schedule('59 23 * * *', function() {
+cron.schedule('0 */12 * * *', function() {
   console.log('---------------------');
   console.log('Running Daily Cron Job');
   //Daily check of RabbitMQ,...
