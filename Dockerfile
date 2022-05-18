@@ -24,6 +24,8 @@ RUN npm run build
 # changes working directory to /app/backend
 WORKDIR /app/backend
 
+RUN mkdir -p ./uploads
+
 # Copy the backend package and package-lock.json file
 COPY backend/package*.json ./
 COPY backend/prisma/schema.prisma ./prisma/
