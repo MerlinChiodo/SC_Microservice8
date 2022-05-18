@@ -26,6 +26,7 @@ WORKDIR /app/backend
 
 # Copy the backend package and package-lock.json file
 COPY backend/package*.json ./
+COPY backend/schema.prisma ./
 
 # Install node packages
 RUN npm install
