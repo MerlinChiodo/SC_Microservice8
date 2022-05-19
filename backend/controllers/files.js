@@ -18,10 +18,10 @@ const uploadFile = async (req, res) => {
             })
             res.status(200).json({ message: "Successfully uploaded file" });
         }else{
-            res.status(400).json({ message: "The file is missing" });
+            res.status(401).json({ message: "Sorry, you have no rights to do this" });
         }
     }else{
-        res.status(401).json({ message: "Sorry, you have no rights to do this" });
+        res.status(400).json({ message: "The file is missing" });
     }
 }
 

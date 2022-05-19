@@ -21,6 +21,8 @@ const rabbitMQ = require('./controllers/rabbitMQ/rabbitMQReceive.js');
 const contactRequest = require('./routes/contactRequest.js')
 const operations = require('./routes/operations.js')
 const files = require('./routes/files.js')
+const appointments = require('./routes/appointments.js')
+const donations = require('./routes/donations.js')
 
 /**
  * Cronjobs
@@ -42,6 +44,8 @@ cron.schedule('0 */12 * * *', function() {
 app.use('/api/contactRequest', contactRequest)
 app.use('/api/operations', operations)
 app.use('/api/files', files)
+app.use('/api/appointments', appointments)
+app.use('/api/donations', donations)
 
 // Use history for delivering Vue.js 
 app.use(history());
