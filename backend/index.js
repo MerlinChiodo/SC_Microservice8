@@ -25,6 +25,8 @@ const appointments = require('./routes/appointments.js')
 const donations = require('./routes/donations.js')
 const income = require('./routes/income.js')
 const companies = require('./routes/companies.js')
+const notes = require('./routes/process/notes.js')
+const statusUpdates = require('./routes/process/statusUpdates.js')
 
 /**
  * Cronjobs
@@ -50,6 +52,8 @@ app.use('/api/appointments', appointments)
 app.use('/api/donations', donations)
 app.use('/api/income', income)
 app.use('/api/companies', companies)
+app.use('/api/notes', notes)
+app.use('/api/statusUpdates', statusUpdates)
 
 // Use history for delivering Vue.js 
 app.use(history());
