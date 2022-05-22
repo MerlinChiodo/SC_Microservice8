@@ -29,6 +29,9 @@ const notes = require('./routes/process/notes.js')
 const statusUpdates = require('./routes/process/statusUpdates.js')
 const citizens = require('./routes/citizen.js')
 const processes = require('./routes/process/process.js')
+const forms = require('./routes/internal/forms.js')
+const blogEntries = require('./routes/internal/blogEntry.js')
+const worker = require('./routes/internal/worker.js')
 
 /**
  * Cronjobs
@@ -58,6 +61,9 @@ app.use('/api/notes', notes)
 app.use('/api/statusUpdates', statusUpdates)
 app.use('/api/citizen', citizens)
 app.use('/api/process', processes)
+app.use('/api/forms', forms)
+app.use('/api/blogEntries', blogEntries)
+app.use('/api/worker', worker)
 
 // Use history for delivering Vue.js 
 app.use(history());

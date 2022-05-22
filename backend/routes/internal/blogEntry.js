@@ -1,38 +1,41 @@
 const express = require('express');
 const { header, body, param } = require('express-validator');
-const { createProcess, getProcess, getAllProcesses, deleteProcess, editProcess } = require("../../controllers/process/process.js");
+const { createBlogEntry, editBlogEntry, getBlogEntry, getAllBlogEntries, deleteBlogEntry } = require("../../controllers/internal/blogEntry.js");
 const router = express.Router()
 
 router.use(express.urlencoded({ extended: false }))
 router.use(express.json())
 
 router.post('/',
-    body('type').not().isEmpty().isNumeric(),
-    body('customer').not().isEmpty().isNumeric(),
-    body('official').not().isEmpty().isNumeric(),
+    body('path').not().isEmpty(),
     body('date').optional().isDate(),
+    body('type').not().isEmpty().isNumeric(),
+    body('target').not().isEmpty().isAlphanumeric(),
+    body('description').not().isEmpty().isAlphanumeric(),
     header('token').not().isEmpty().trim().escape(),
-    createProcess)
+    createBlogEntry)
 
 router.put('/',
     body('id').not().isEmpty().isNumeric(),
+    body('path').optional(),
     body('type').optional().isNumeric(),
-    body('official').optional().isNumeric(),
+    body('target').optional().isAlphanumeric(),
+    body('description').optional().isAlphanumeric(),
     header('token').not().isEmpty().trim().escape(),
-    editProcess)
+    editBlogEntry)
+
+router.get('/all',
+    header('token').not().isEmpty().trim().escape(),
+    getAllBlogEntries)
 
 router.get('/:id',
     param('id').not().isEmpty().isNumeric(),
     header('token').not().isEmpty().trim().escape(),
-    getProcess)
-
-router.get('/all',
-    header('token').not().isEmpty().trim().escape(),
-    getAllProcesses)
+    getBlogEntry)
 
 router.delete('/:id',
     param('id').not().isEmpty().isNumeric(),
     header('token').not().isEmpty().trim().escape(),
-    deleteProcess)
+    deleteBlogEntry)
 
 module.exports = router

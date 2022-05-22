@@ -1,6 +1,6 @@
 const express = require('express');
 const { header, body, param } = require('express-validator');
-const { createCitizen, getCitizen, deleteCitizen, editCitizen } = require("../controllers/citizen.js");
+const { createCitizen, getCitizen, getAllCitizens, deleteCitizen, editCitizen } = require("../controllers/citizen.js");
 const router = express.Router()
 
 router.use(express.urlencoded({ extended: false }))
@@ -22,6 +22,10 @@ router.put('/',
     body('email').optional().isEmail(),
     header('token').not().isEmpty().trim().escape(),
     editCitizen)
+
+router.get('/all',
+    header('token').not().isEmpty().trim().escape(),
+    getAllCitizens)
 
 router.get('/:id',
     param('id').not().isEmpty().isNumeric(),

@@ -1,38 +1,41 @@
 const express = require('express');
 const { header, body, param } = require('express-validator');
-const { createProcess, getProcess, getAllProcesses, deleteProcess, editProcess } = require("../../controllers/process/process.js");
+const { createForm, editForm, getForm, getAllForms, deleteForm } = require("../../controllers/internal/forms.js");
 const router = express.Router()
 
 router.use(express.urlencoded({ extended: false }))
 router.use(express.json())
 
 router.post('/',
-    body('type').not().isEmpty().isNumeric(),
-    body('customer').not().isEmpty().isNumeric(),
-    body('official').not().isEmpty().isNumeric(),
+    body('path').not().isEmpty(),
     body('date').optional().isDate(),
+    body('type').not().isEmpty().isNumeric(),
+    body('target').not().isEmpty().isAlphanumeric(),
+    body('description').not().isEmpty().isAlphanumeric(),
     header('token').not().isEmpty().trim().escape(),
-    createProcess)
+    createForm)
 
 router.put('/',
     body('id').not().isEmpty().isNumeric(),
+    body('path').optional(),
     body('type').optional().isNumeric(),
-    body('official').optional().isNumeric(),
+    body('target').optional().isAlphanumeric(),
+    body('description').optional().isAlphanumeric(),
     header('token').not().isEmpty().trim().escape(),
-    editProcess)
+    editForm)
+
+router.get('/all',
+    header('token').not().isEmpty().trim().escape(),
+    getAllForms)
 
 router.get('/:id',
     param('id').not().isEmpty().isNumeric(),
     header('token').not().isEmpty().trim().escape(),
-    getProcess)
-
-router.get('/all',
-    header('token').not().isEmpty().trim().escape(),
-    getAllProcesses)
+    getForm)
 
 router.delete('/:id',
     param('id').not().isEmpty().isNumeric(),
     header('token').not().isEmpty().trim().escape(),
-    deleteProcess)
+    deleteForm)
 
 module.exports = router
