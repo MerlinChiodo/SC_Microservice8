@@ -24,13 +24,10 @@ router.put('/',
     header('token').not().isEmpty().trim().escape(),
     editForm)
 
-router.get('/all',
-    header('token').not().isEmpty().trim().escape(),
-    getAllForms)
+router.get('/all',getAllForms)
 
 router.get('/:id',
     param('id').not().isEmpty().isNumeric(),
-    header('token').not().isEmpty().trim().escape(),
     getForm)
 
 router.delete('/:id',

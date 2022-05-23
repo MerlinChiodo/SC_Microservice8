@@ -24,13 +24,10 @@ router.put('/',
     header('token').not().isEmpty().trim().escape(),
     editBlogEntry)
 
-router.get('/all',
-    header('token').not().isEmpty().trim().escape(),
-    getAllBlogEntries)
+router.get('/all',getAllBlogEntries)
 
 router.get('/:id',
     param('id').not().isEmpty().isNumeric(),
-    header('token').not().isEmpty().trim().escape(),
     getBlogEntry)
 
 router.delete('/:id',

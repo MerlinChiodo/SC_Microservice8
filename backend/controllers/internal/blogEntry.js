@@ -30,11 +30,7 @@ const getBlogEntry = async (req,res) => {
     if(!errors.isEmpty()){
         return res.status(422).json({ errors: errors.array()[0] });
     }
-    if(auth.auth()){
-        return res.status(404).json({ message: "Could not find this blog entry" });
-    }else{
-        return res.status(401).json({ message: "Sorry, you have no rights to do this" });
-    } 
+    return res.status(404).json({ message: "Could not find this blog entry" }); 
 }
 
 const getAllBlogEntries = async (req,res) => {
@@ -42,11 +38,7 @@ const getAllBlogEntries = async (req,res) => {
     if(!errors.isEmpty()){
         return res.status(422).json({ errors: errors.array()[0] });
     }
-    if(auth.auth()){
-        return res.status(404).json({ message: "Could not find any blog entry" });
-    }else{
-        return res.status(401).json({ message: "Sorry, you have no rights to do this" });
-    } 
+    return res.status(404).json({ message: "Could not find any blog entry" });
 }
 
 const deleteBlogEntry = async (req, res) => {
