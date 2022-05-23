@@ -14,6 +14,25 @@ function processDonations(event){
 
 module.exports = {
     checkQueue: function () {
-        return 1;
+        connectionString = `amqp://${process.env.rabbitMQUsername}:${process.env.rabbitMQPassword}@${process.env.serverURL}`;
+        amqp.connect(connectionString, function (error0, connection) {
+        if (error0) {
+            return 1;
+        }
+        connection.createChannel(function (error1, channel) {
+            if (error1) {
+                return 1;
+            }
+
+            console.log('Listening for events')
+
+            channel.consume('finanzamt', function (msg) {
+                console.log(msg.content.toString())
+            }, {
+                noAck: true,
+            })
+        })
+    })
+    return 0;
     }
   };
