@@ -8,11 +8,11 @@ const port = 3000;
 /**
  * Middleware
  */
- app.use(express.json())
- app.use(express.urlencoded({
-     extended: false,
- }))
- app.use(cors())
+app.use(express.json())
+app.use(express.urlencoded({
+  extended: false,
+}))
+app.use(cors())
 
 /**
  * Imports
@@ -32,6 +32,7 @@ const processes = require('./routes/process/process.js')
 const forms = require('./routes/internal/forms.js')
 const blogEntries = require('./routes/internal/blogEntry.js')
 const worker = require('./routes/internal/worker.js')
+const deadline = require('./routes/internal/deadline.js')
 
 /**
  * Cronjobs
@@ -64,6 +65,7 @@ app.use('/api/process', processes)
 app.use('/api/forms', forms)
 app.use('/api/blogEntries', blogEntries)
 app.use('/api/worker', worker)
+app.use('/api/deadline', deadline)
 
 // Use history for delivering Vue.js 
 app.use(history());

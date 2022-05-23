@@ -120,6 +120,13 @@ CREATE TABLE `faultyEvents` (
   `eventId` int(11) NOT NULL
 );
 
+CREATE TABLE `deadlines` (
+  `id` int(11) PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `descr` text NOT NULL,
+  `title` text NOT NULL
+);
+
 ALTER TABLE `appointments` ADD FOREIGN KEY (`customer`) REFERENCES `citizens` (`id`);
 
 ALTER TABLE `appointments` ADD FOREIGN KEY (`official`) REFERENCES `worker` (`id`);
