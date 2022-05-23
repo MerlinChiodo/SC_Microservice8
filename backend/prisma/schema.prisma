@@ -177,3 +177,10 @@ model faultyEvents {
   failTime DateTime @default(now()) @db.Timestamp(0)
   eventId  Int
 }
+
+model deadlines {
+  id    Int      @id @default(autoincrement())
+  date  DateTime @default(now()) @db.DateTime(0)
+  descr String   @db.Text
+  title String   @db.Text
+}

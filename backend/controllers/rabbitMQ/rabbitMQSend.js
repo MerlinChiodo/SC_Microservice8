@@ -1,11 +1,7 @@
 import amqp from 'amqplib/callback_api.js'
 
 export default class RabbitMQWrapper {
-
-    static #rabbitUsername = process.env.RABBIT_USERNAME
-    static #rabbitPassword = process.env.RABBIT_PASSWORD
-    static #rabbitServerUrl = process.env.RABBIT_SERVER_URL
-    static #connectionString = `amqp://${RabbitMQWrapper.#rabbitUsername}:${RabbitMQWrapper.#rabbitPassword}@${RabbitMQWrapper.#rabbitServerUrl}:5672`;
+    static #connectionString = `amqp://${process.env.rabbitMQUsername}:${process.env.rabbitMQPassword}@${process.env.serverURL}`;
 
     static async publish(event) {
         console.log(`RabbitMQ: attempting to sent event ${event}`);
