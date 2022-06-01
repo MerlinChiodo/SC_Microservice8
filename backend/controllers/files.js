@@ -11,6 +11,7 @@ const uploadFile = async (req, res) => {
         return res.status(422).json({ errors: errors.array()[0] });
     }
     if(req.file !== undefined){
+        filename = null
         if(auth.auth()){
             try {
                 const result = await prismaClient.file.create({
@@ -19,21 +20,19 @@ const uploadFile = async (req, res) => {
                         process: req.body.processID != null ? parseInt(req.body.processID) : undefined
                     },
                 })
+                filename = result.path
             }catch(e){
                 if(e instanceof Prisma.PrismaClientKnownRequestError){
                     // Error was thrown by Prisma
                     if (e.code === 'P2003') {
                         // Foreign key constraint failed on the field -> unknown process
                         return res.status(400).json({ message: "Unknown process" });
-                    }else{
-                        // Other, unexpected error -> Internal error
-                        return res.status(500).json({ message: "Internal server error" });
                     }
                 }
                 // Other error (should not happen)
-                throw e
+                return res.status(500).json({ message: "Internal server error" });
             }
-            res.status(200).json({ message: "Successfully uploaded file" });
+            res.status(201).json({ message: "Successfully uploaded file", filename: filename });
         }else{
             res.status(401).json({ message: "Sorry, you have no rights to do this" });
         }
@@ -109,12 +108,25 @@ const deleteFile = async (req, res) => {
         try {
             if (fs.existsSync(path)) {
                 //file exists
-                const result = await prismaClient.file.delete({
-                where: {
-                        path: filename
-                    },
-                })
-                fs.unlinkSync(path)
+                try{
+                    const result = await prismaClient.file.delete({
+                    where: {
+                            path: filename
+                        },
+                    })
+                    fs.unlinkSync(path)
+                }catch(e){
+                    if(e instanceof Prisma.PrismaClientKnownRequestError){
+                        // Error was thrown by Prisma
+                        if (e.code === 'P2025') {
+                            // File is not present in DB -> cleanup
+                            fs.unlinkSync(path)
+                            return res.status(200).json({ message: "Successfully removed file" });
+                        }
+                    }
+                    // Other error (should not happen)
+                    return res.status(500).json({ message: "Internal server error" });
+                }
                 //file removed from db and storage
                 res.status(200).json({ message: "Successfully removed file" });
             }else{
