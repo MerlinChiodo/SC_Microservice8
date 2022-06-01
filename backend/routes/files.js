@@ -1,6 +1,6 @@
 const express = require('express')
 const { body, query, param, header } = require('express-validator');
-const { uploadFile, getFile, getAllFiles, deleteFile } = require('../controllers/files.js');
+const { uploadFile, getFile, getAllFiles, getEveryFile, deleteFile } = require('../controllers/files.js');
 const router = express.Router()
 const multer = require('multer');
 const path = require('path')
@@ -36,6 +36,11 @@ router.get('/All',
     header('process').not().isEmpty().isNumeric(),
     header('token').not().isEmpty().trim().escape(),
     getAllFiles)
+
+
+router.get('/Every',
+    header('token').not().isEmpty().trim().escape(),
+    getEveryFile)
 
 router.get('/:fileUUID',
     param('fileUUID').not().isEmpty(),
