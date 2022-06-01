@@ -7,10 +7,10 @@ router.use(express.urlencoded({ extended: false }))
 router.use(express.json())
 
 router.post('/',
-    body('date').not().isEmpty().isDate(),
     body('amount').not().isEmpty().isNumeric(),
     body('recipiant').not().isEmpty().isNumeric(),
     body('donator').not().isEmpty().isNumeric(),
+    body('date').optional().isDate(),
     body('reason').optional(),
     body('purpose').optional(),
     header('token').not().isEmpty().trim().escape(),
@@ -26,7 +26,7 @@ router.get('/:recipiant',
     getReceivedDonations)
 
 router.delete('/',
-    header('date').not().isEmpty().isDate(),
+    header('date').not().isEmpty().isISO8601(),
     header('amount').not().isEmpty().isNumeric(),
     header('recipiant').not().isEmpty().isNumeric(),
     header('donator').not().isEmpty().isNumeric(),
