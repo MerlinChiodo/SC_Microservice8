@@ -57,13 +57,16 @@ module.exports = {
         return 1;
     },
     processEvents: function(events){
-        events.forEach (function (event, index, arr) {
-            if(event.event_id==9003){
-                processDonation(event);
-            }else{
-                console.log(event)
+        while(events.length>0){
+            item = events.pop()
+            switch (item.event_id) {
+                case 9003:
+                    processDonation(item);
+                    break;
+                default:
+                    console.log(item);
+                    break;
             }
-            arr.splice(index, 1);
-          });
+        }
     }
   };
