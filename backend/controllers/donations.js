@@ -21,8 +21,6 @@ const createDonation = async (req, res) => {
                     purpose: req.body.purpose != null ? req.body.purpose : undefined
                 },
             })
-            console.log(result)
-            donationID = 0
         }catch(e){
             if(e instanceof Prisma.PrismaClientKnownRequestError){
                 // Error was thrown by Prisma

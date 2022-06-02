@@ -2,6 +2,7 @@ const amqp = require('amqplib/callback_api.js');
 const Ajv = require('ajv');
 const DonationRabbitMQSchema = require('./events/donationEvent.js');
 const prismaClient = require('../../prismaClient');
+const fetch = require('node-fetch');
 
 function processCitizenReports(event){
     
@@ -17,10 +18,16 @@ async function processDonation(event){
                 eventId: 9003
             },
         })
-        console.log(result)
+        console.log("Faulty donation")
     }else{
-        console.log("VALID - Donation")
-        //Process
+        const body = {
+            amount: event.amount,
+            donator: event.citizen_id,
+            recipiant: 0 
+        }
+        await fetch('http://localhost:3000/api/donations', {method: 'post', body: JSON.stringify(body), headers: {'token':"1234",'Content-Type':"application/json"}})
+        .then(res => res.json())
+        .then(json => console.log("Donation -",json));
     }
 }
 
@@ -50,12 +57,13 @@ module.exports = {
         return 1;
     },
     processEvents: function(events){
-        events.forEach (function (event, index) {
+        events.forEach (function (event, index, arr) {
             if(event.event_id==9003){
                 processDonation(event);
             }else{
-                console.log(event.toString())
+                console.log(event)
             }
+            arr.splice(index, 1);
           });
     }
   };
