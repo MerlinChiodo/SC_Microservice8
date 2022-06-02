@@ -20,7 +20,29 @@ const getFaultyEvents = async (req,res) => {
     } 
 }
 
+const deleteFaultyEvent = async (req,res) => {
+    const errors = validationResult(req);
+    console.log(errors)
+    if(!errors.isEmpty()){
+        return res.status(422).json({ errors: errors.array()[0] });
+    }
+    if(auth.auth()){
+        try {
+            const result = await prismaClient.faultyEvents.delete({
+                where: {
+                    id: parseInt(req.params['id'])
+                },
+            })
+            res.status(200).json({ message: "Successfully removed event" });
+        } catch(err) {
+            res.status(404).json({ message: "Could not find event" });
+        }
+    }else{
+        return res.status(401).json({ message: "Sorry, you have no rights to do this" });
+    } 
+}
  
 module.exports = {
-    getFaultyEvents
+    getFaultyEvents,
+    deleteFaultyEvent
 }
