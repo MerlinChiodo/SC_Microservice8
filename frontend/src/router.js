@@ -7,6 +7,7 @@ const Contact = () => import("./views/contact.vue")
 const Submit = () => import("./views/account/submit.vue")
 const Operations = () => import("./views/account/processes.vue")
 const NotFound = () => import("./views/NotFound.vue")
+const Spenden = () => import("./views/donations.vue")
 //Staff pages 
 const Internal_operations = () => import("./views/internal/processes.vue")
 const faulty_events = () => import("./views/internal/faultyEvents.vue")
@@ -40,6 +41,11 @@ const routes = [
     path: "/einreichen",
     name: "Einreichen",
     component: Submit,
+  },
+  {
+    path: "/spenden",
+    name: "Spenden",
+    component: Spenden,
   },
   {
     path: "/Konto/Vorgaenge",

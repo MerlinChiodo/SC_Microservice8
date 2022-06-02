@@ -44,7 +44,7 @@ const getAllDonations = async (req,res) => {
         return res.status(422).json({ errors: errors.array()[0] });
     }
     if(auth.auth()){
-        userID = 0 //TODO: get from token / all if admin
+        userID = null //TODO: get from token / all if admin
         const donations = await prismaClient.donation.findMany({
             where: {
                 donator: {
