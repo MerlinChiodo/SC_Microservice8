@@ -81,6 +81,7 @@
           <!-- Footer Column 3 -->
           <div class="col-md-3 mb-md-0 mb-3">
             <router-link to="/Kontakt" class="nav-link"> Kontakt </router-link>
+            <router-link to="/Upload" class="nav-link"> Dateien einreichen </router-link>
           </div>
         </div>
         <!-- End Footer row 1 -->

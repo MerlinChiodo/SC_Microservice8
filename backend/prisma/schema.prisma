@@ -42,7 +42,6 @@ model citizens {
   donation                           donation[]
   income                             income[]
   process                            process[]
-  worker                             worker?
 }
 
 model companies {
@@ -166,7 +165,6 @@ model worker {
   id           Int            @id
   sign         String         @db.VarChar(255)
   admin        Boolean
-  citizens     citizens       @relation(fields: [id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "worker_ibfk_1")
   appointments appointments[]
   process      process[]
 }
