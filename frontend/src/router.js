@@ -9,6 +9,7 @@ const Operations = () => import("./views/account/processes.vue")
 const NotFound = () => import("./views/NotFound.vue")
 //Staff pages 
 const Internal_operations = () => import("./views/internal/processes.vue")
+const faulty_events = () => import("./views/internal/faultyEvents.vue")
 const routes = [
   {
     path: "/",
@@ -49,6 +50,11 @@ const routes = [
     path: "/Intern/Vorgaenge",
     name: "Interne Vorgänge",
     component: Internal_operations,
+  },
+  {
+    path: "/Intern/Events",
+    name: "Fehlerhafte Events",
+    component: faulty_events,
   },
   {
     path: "/:catchAll(.*)",
