@@ -4,6 +4,15 @@ const DonationRabbitMQSchema = require('./events/donationEvent.js');
 const prismaClient = require('../../prismaClient');
 const fetch = require('node-fetch');
 
+async function storeFaultyEvent(id,content){
+    return await prismaClient.faultyEvents.create({
+        data: {
+            content: JSON.stringify(content),
+            eventId: parseInt(id)
+        },
+    })
+}
+
 function processCitizenReports(event){
     
 }
@@ -11,14 +20,8 @@ function processCitizenReports(event){
 async function processDonation(event){
     var ajv = new Ajv();
     if (!ajv.validate(DonationRabbitMQSchema, event)) {
-        // Faulty Donation
-        result = await prismaClient.faultyEvents.create({
-            data: {
-                content: JSON.stringify(event),
-                eventId: 9003
-            },
-        })
-        console.log("Faulty donation")
+        // Faulty Donation (correct id, wrong fields)
+        storeFaultyEvent(9003,event).then(console.log("Faulty donation"))
     }else{
         const body = {
             amount: event.amount,
@@ -26,8 +29,14 @@ async function processDonation(event){
             recipiant: 0 
         }
         await fetch('http://localhost:3000/api/donations', {method: 'post', body: JSON.stringify(body), headers: {'token':"1234",'Content-Type':"application/json"}})
-        .then(res => res.json())
-        .then(json => console.log("Donation -",json));
+        .then(response => {
+            if(response.status === 201){
+                console.log("Donation was created")
+            }else{
+                // Faulty donation (wrong content)
+                storeFaultyEvent(9003,event).then(console.log("Faulty donation"))
+            }
+          })
     }
 }
 
@@ -36,11 +45,15 @@ function checkQueue(incomingEvents){
     amqp.connect(connectionString, function (error0, connection) {
         if (error0) {
             console.error("[RABBITMQ fail] "+error0.message);
-            return setTimeout(checkQueue, 1000);
+            return setTimeout(checkQueue, 1000, incomingEvents);
         }
+        connection.on("error", function(err) {
+            console.error("[RABBITMQ error]", err.message);
+        });
         connection.on("close", function() {
             console.error("[RABBITMQ reconnecting]");
-            return setTimeout(checkQueue, 1000);
+            connection.close();
+            return setTimeout(checkQueue, 1000, incomingEvents);
         });
         connection.createChannel(function (error1, channel) {
             if (error1) {
@@ -70,6 +83,7 @@ module.exports = {
                     processDonation(item);
                     break;
                 default:
+                    storeFaultyEvent(item.event_id,item)
                     console.log(item);
                     break;
             }
