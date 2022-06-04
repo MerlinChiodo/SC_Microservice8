@@ -46,7 +46,7 @@ export default {
             method: 'GET',
             headers: {'token':"1234"}
         };
-        fetch('http://localhost:3000/api/faultyEvents', options)
+        fetch('/api/faultyEvents', options)
         .then((response) => response.json())
         .then((data) => {
             this.events = data.events
@@ -58,11 +58,10 @@ export default {
             method: 'delete',
             headers: {'token':"1234"}
         };
-        fetch('http://localhost:3000/api/faultyEvents/'+id, options)
+        fetch('/api/faultyEvents/'+id, options)
         .then((response) => response.json())
         .then(this.loadEvents)
         .catch(error => {console.log(error)});
-
       }
   },
 };

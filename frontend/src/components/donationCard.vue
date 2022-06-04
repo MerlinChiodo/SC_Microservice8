@@ -55,7 +55,7 @@ export default {
             method: 'GET',
             headers: {'token':"1234"}
         };
-        fetch('http://localhost:3000/api/donations', options)
+        fetch('/api/donations', options)
         .then((response) => response.json())
         .then((data) => {
             console.log(data)
@@ -69,7 +69,7 @@ export default {
             method: 'GET',
             headers: {'token':"1234"}
         };
-        fetch('http://localhost:3000/api/donations/'+companyID, options)
+        fetch('/api/donations/'+companyID, options)
         .then((response) => response.json())
         .then((data) => {
             console.log(data)
