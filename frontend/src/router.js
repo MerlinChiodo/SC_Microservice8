@@ -3,6 +3,7 @@ import Home from "./views/home.vue";
 import Events from "./views/events.vue"
 import News from "./views/blog.vue"
 import Forms from "./views/forms.vue"
+import Upload from "./views/upload.vue"
 const Contact = () => import("./views/contact.vue")
 const Submit = () => import("./views/account/submit.vue")
 const Operations = () => import("./views/account/processes.vue")
@@ -61,6 +62,11 @@ const routes = [
     path: "/Intern/Events",
     name: "Fehlerhafte Events",
     component: faulty_events,
+  },
+  {
+    path: "/upload",
+    name: "Upload",
+    component: Upload,
   },
   {
     path: "/:catchAll(.*)",

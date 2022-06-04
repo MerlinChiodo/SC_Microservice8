@@ -2,6 +2,7 @@ const app = require('./app.js');
 const cron = require('node-cron');
 const port = 3000;
 const rabbitMQ = require('./controllers/rabbitMQ/rabbitMQReceive.js');
+
 /**
  * RabbitMQ
  */
@@ -11,6 +12,7 @@ if(rabbitMQ.checkQueue(incomingEvents)<1){
 }else{
   console.log("RabbitMQ - Connected")
 }
+
 /**
  * Cronjobs
  */

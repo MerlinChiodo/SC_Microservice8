@@ -1,6 +1,6 @@
 const express = require('express')
-const { query, param, header } = require('express-validator');
-const { uploadFile, getFile, getAllFiles, deleteFile } = require('../controllers/files.js');
+const { body, query, param, header } = require('express-validator');
+const { uploadFile, getFile, getAllFiles, getEveryFile, deleteFile } = require('../controllers/files.js');
 const router = express.Router()
 const multer = require('multer');
 const path = require('path')
@@ -29,18 +29,24 @@ router.use(express.json())
 
 router.post('/', upload.single("file"),
     header('token').not().isEmpty().trim().escape(),
+    body('processID').optional().isNumeric(),
     uploadFile)
+
+router.get('/All',
+    header('process').not().isEmpty().isNumeric(),
+    header('token').not().isEmpty().trim().escape(),
+    getAllFiles)
+
+
+router.get('/Every',
+    header('token').not().isEmpty().trim().escape(),
+    getEveryFile)
 
 router.get('/:fileUUID',
     param('fileUUID').not().isEmpty(),
     query('token').trim().escape(),
     header('token').trim().escape(),
     getFile)
-
-router.get('/All',
-    header('operationID').not().isEmpty().isNumeric(),
-    header('token').not().isEmpty().trim().escape(),
-    getAllFiles)
 
 router.delete('/:fileUUID',
     param('fileUUID').not().isEmpty(),
