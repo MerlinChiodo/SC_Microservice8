@@ -31,31 +31,37 @@ async function processDonation(event){
     }
 }
 
-module.exports = {
-    checkQueue: function (incomingEvents) {
-        connectionString = `amqp://${process.env.rabbitMQUsername}:${process.env.rabbitMQPassword}@${process.env.serverURL}`;
-        amqp.connect(connectionString, function (error0, connection) {
-            if (error0) {
+function checkQueue(incomingEvents){
+    connectionString = `amqp://${process.env.rabbitMQUsername}:${process.env.rabbitMQPassword}@${process.env.serverURL}?heartbeat=60`;
+    amqp.connect(connectionString, function (error0, connection) {
+        if (error0) {
+            console.error("[RABBITMQ fail] "+error0.message);
+            return setTimeout(checkQueue, 1000);
+        }
+        connection.on("close", function() {
+            console.error("[RABBITMQ reconnecting]");
+            return setTimeout(checkQueue, 1000);
+        });
+        connection.createChannel(function (error1, channel) {
+            if (error1) {
                 return 0;
             }
-            connection.createChannel(function (error1, channel) {
-                if (error1) {
-                    return 0;
+            channel.consume('finanzamt', function (msg) {
+                try{
+                    incomingEvents.push(JSON.parse(msg.content))
+                }catch(error){
+                    console.log("Faulty Event")
+                    return
                 }
-                channel.consume('finanzamt', function (msg) {
-                    try{
-                        incomingEvents.push(JSON.parse(msg.content))
-                    }catch(error){
-                        console.log("Faulty Event")
-                        return
-                    }
-                }, {
-                    noAck: true,
-                })
+            }, {
+                noAck: true,
             })
         })
-        return 1;
-    },
+    })
+    return 1;
+}
+module.exports = {
+    checkQueue,
     processEvents: function(events){
         while(events.length>0){
             item = events.pop()
