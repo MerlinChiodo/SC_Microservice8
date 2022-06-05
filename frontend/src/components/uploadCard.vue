@@ -1,12 +1,12 @@
 <template>
-  <div class="row border border-dark pb-4">
+  <div class="row pb-4">
     <!-- Form -->
     <form>
-        <div class="mb-3" v-if="!for_process">
+        <div class="mb-3" v-if="for_process==undefined">
             <label for="process" class="form-label">Token</label><br>
             <input type="text" id="process" v-model="token"/>
         </div>
-        <div class="mb-3" v-if="!for_process">
+        <div class="mb-3" v-if="for_process==undefined">
             <label for="process" class="form-label">Prozess-Nr.</label><br>
             <input type="number" id="process" v-model.number="process"/>
         </div>
@@ -28,7 +28,7 @@
                 <div v-if="response==null" class="spinner-border" role="status">
                     <span class="sr-only"></span>
                 </div>
-                <a v-else :href="`api/files/${response.filename}?token=1234`">Datei ansehen</a>
+                <a v-else :href="`/api/files/${response.filename}?token=1234`">Datei ansehen</a>
             </div>
         </div>
         <div class="modal-footer">
@@ -73,12 +73,13 @@ export default {
         }
         const formData = new FormData();
         formData.append('file', this.file);
+        formData.append('processID', this.process);
         const options = {
             method: 'POST',
             body: formData,
             headers: {'token':"1234"}
         };
-        fetch('api/files', options)
+        fetch('/api/files', options)
         .then((response) => response.json())
         .then((data) => {
             this.response = data;
@@ -89,3 +90,13 @@ export default {
     }
 };
 </script>
+<style scoped>
+button {
+  background-color: rgb(2, 0, 36);
+  border-color: rgb(2, 0, 36);
+}
+button:hover {
+  background-color: rgb(2, 0, 36);
+  border-color: rgb(2, 0, 36);
+}
+</style>

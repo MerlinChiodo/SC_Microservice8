@@ -7,6 +7,7 @@ import Upload from "./views/upload.vue"
 const Contact = () => import("./views/contact.vue")
 const Submit = () => import("./views/account/submit.vue")
 const Operations = () => import("./views/account/processes.vue")
+const Operation = () => import("./views/account/process.vue")
 const NotFound = () => import("./views/NotFound.vue")
 //Staff pages 
 const Internal_operations = () => import("./views/internal/processes.vue")
@@ -45,6 +46,11 @@ const routes = [
     path: "/Konto/Vorgaenge",
     name: "Vorgänge",
     component: Operations,
+  },
+  {
+    path: "/Konto/Vorgang",
+    name: "Vorgange",
+    component: Operation,
   },
   {
     path: "/Intern/Vorgaenge",
