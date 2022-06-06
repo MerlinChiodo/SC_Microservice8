@@ -6,7 +6,7 @@
         <a :href="`/api/files/${item.path}?token=1234`">
             [{{ item.path.split(".")[1] }}] Datei ansehen
         </a><br />
-        Upload-Datum: {{ formatDate(item.date) }}
+        Upload-Datum: {{ isoDateToString(item.date) }}
       </p>
     </div>
     <br />
@@ -44,12 +44,6 @@ export default {
         .catch((error) => {
           console.log(error);
         });
-    },
-    formatDate(isoDate) {
-      return isoDate
-        .substring(0, isoDate.length - 8)
-        .replaceAll("-", ".")
-        .replace("T", " ");
     },
   },
 };

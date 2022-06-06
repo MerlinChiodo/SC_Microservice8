@@ -7,7 +7,7 @@
         :key="item.id"
         :class="{ 'from-agent': item.fromUser, 'from-me': !item.fromUser }"
       >
-        <small class="date">{{ formatDate(item.date) }}</small
+        <small class="date">{{ isoDateToString(item.date) }}</small
         ><br />
         {{ item.text }}
       </p>
@@ -60,12 +60,6 @@ export default {
         .catch((error) => {
           console.log(error);
         });
-    },
-    formatDate(isoDate) {
-      return isoDate
-        .substring(0, isoDate.length - 8)
-        .replaceAll("-", ".")
-        .replace("T", " ");
     },
     sendNote() {
       if (this.neue_nachricht.length > 0) {
