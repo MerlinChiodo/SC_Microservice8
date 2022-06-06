@@ -56,7 +56,7 @@ const getAllProcesses = async (req,res) => {
                 citizens: true,
                 worker: true,
                 processTypes: true,
-                statusUpdates: true
+                statusUpdates: {orderBy: [{date: 'asc',}]}
             },
         })
         if(result.length == 0){

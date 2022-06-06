@@ -8,7 +8,7 @@ router.use(express.json())
 
 router.post('/',
     body('date').optional().isDate(),
-    body('title').not().isEmpty().isNumeric(),
+    body('title').not().isEmpty().isAlphanumeric(),
     body('description').not().isEmpty().isAlphanumeric(),
     header('token').not().isEmpty().trim().escape(),
     createDeadline)

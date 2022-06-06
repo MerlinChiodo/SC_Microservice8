@@ -41,7 +41,7 @@ async function processDonation(event){
 }
 
 function checkQueue(incomingEvents){
-    connectionString = `amqp://${process.env.rabbitMQUsername}:${process.env.rabbitMQPassword}@${process.env.serverURL}?heartbeat=60`;
+    connectionString = `amqp://${process.env.RABBIT_USERNAME}:${process.env.RABBIT_PASSWORD}@${process.env.RABBIT_SERVER_URL}?heartbeat=60`;
     amqp.connect(connectionString, function (error0, connection) {
         if (error0) {
             console.error("[RABBITMQ fail] "+error0.message);
