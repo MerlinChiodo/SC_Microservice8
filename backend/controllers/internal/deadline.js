@@ -1,5 +1,8 @@
 const {validationResult} = require('express-validator');
 const auth = require('../auth.js');
+const prismaClient = require('../../prismaClient');
+const rabbitMQSend = require('../rabbitMQ/rabbitMQSend');
+const ForumCalendarRabbitMQSchema = require('../rabbitMQ/events/ForumCalendarEvent.json');
 
 const createDeadline = async (req, res) => {
     const errors = validationResult(req);
@@ -7,7 +10,34 @@ const createDeadline = async (req, res) => {
         return res.status(422).json({ errors: errors.array()[0] });
     }
     if(auth.auth()){
-        return res.status(422).json({ message: "Could not create deadline" });
+        ce_time = req.body.date
+        if(!req.body.date){
+            var date = new Date();
+            ce_time = date.toISOString(); 
+        }
+        ce_title = req.body.title
+        ce_descr = req.body.description
+        jsevent = {
+            event_id:8001,
+            event_name:"newServicePost",
+            service:"Finanzamt",
+            title: ce_title,
+            short_description: ce_descr,
+            event_on: ce_time
+        }
+        rabbitMQSend.publish(jsevent,'*.*',ForumCalendarRabbitMQSchema);
+        try{
+            const result = await prismaClient.deadlines.create({ 
+                data: {
+                    title: ce_title,
+                    descr: ce_descr,
+                    date: ce_time,
+                },
+            })
+        }catch(e){
+            return res.status(422).json({ message: "Could not create deadline" });
+        }
+        return res.status(201).json({ message: "The deadline was created" });
     }else{
         return res.status(401).json({ message: "Sorry, you have no rights to do this" });
     } 

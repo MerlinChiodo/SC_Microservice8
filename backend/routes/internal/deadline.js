@@ -7,7 +7,7 @@ router.use(express.urlencoded({ extended: false }))
 router.use(express.json())
 
 router.post('/',
-    body('date').optional().isDate(),
+    body('date').optional().isLength({min:11}).isISO8601(),
     body('title').not().isEmpty().isAlphanumeric(),
     body('description').not().isEmpty().isAlphanumeric(),
     header('token').not().isEmpty().trim().escape(),
