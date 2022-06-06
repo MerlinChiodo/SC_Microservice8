@@ -2,7 +2,7 @@
   <div class="container">
     <h2>Upload</h2>
     <br />
-    <UploadCard :for_process="2"/>
+    <UploadCard />
     <br />
   </div>
 </template>

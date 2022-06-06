@@ -158,7 +158,7 @@ model statusUpdates {
   date                           DateTime @default(now()) @db.Timestamp(0)
   process_processTostatusUpdates process  @relation(fields: [process], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "statusUpdates_ibfk_1")
 
-  @@id([process, status])
+  @@id([process, status, date])
 }
 
 model worker {

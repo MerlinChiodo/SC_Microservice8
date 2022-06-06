@@ -21,14 +21,14 @@ router.put('/',
     header('token').not().isEmpty().trim().escape(),
     editProcess)
 
+router.get('/all',
+    header('token').not().isEmpty().trim().escape(),
+    getAllProcesses)
+
 router.get('/:id',
     param('id').not().isEmpty().isNumeric(),
     header('token').not().isEmpty().trim().escape(),
     getProcess)
-
-router.get('/all',
-    header('token').not().isEmpty().trim().escape(),
-    getAllProcesses)
 
 router.delete('/:id',
     param('id').not().isEmpty().isNumeric(),

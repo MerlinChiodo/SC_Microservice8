@@ -20,7 +20,7 @@
                 <td>{{item.donator}}</td>
                 <td>{{item.reason}}</td>
                 <td>{{item.purpose}}</td>
-                <td>{{item.date}}</td>
+                <td>{{isoDateToString(item.date)}}</td>
             </tr>
         </tbody>
         </table>

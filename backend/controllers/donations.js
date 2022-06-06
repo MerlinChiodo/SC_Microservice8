@@ -46,6 +46,7 @@ const getAllDonations = async (req,res) => {
     if(auth.auth()){
         userID = null //TODO: get from token / all if admin
         const donations = await prismaClient.donation.findMany({
+            orderBy: [{date: 'desc',}],
             where: {
                 donator: {
                     equals: userID != null ? userID : undefined
@@ -70,6 +71,7 @@ const getReceivedDonations = async (req,res) => {
     if(auth.auth()){
         //TODO: check if user is admin or owner
         const donations = await prismaClient.donation.findMany({
+            orderBy: [{date: 'desc',}],
             where: {
                 recipiant: {
                     equals: parseInt(req.params['recipiant'])

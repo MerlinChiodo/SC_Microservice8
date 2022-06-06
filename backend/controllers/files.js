@@ -82,6 +82,11 @@ const getAllFiles = async (req,res) => {
     if(auth.auth()){
         // Get all files of process
         const result = await prismaClient.file.findMany({
+            orderBy: [
+                {
+                  date: 'asc',
+                }
+              ],
             where: {
                 process: {
                     equals: parseInt(req.headers.process),

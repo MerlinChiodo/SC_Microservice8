@@ -8,7 +8,7 @@ router.use(express.json())
 
 router.post('/',
     body('process').not().isEmpty().isNumeric(),
-    body('date').optional().isDate(),
+    body('date').optional().isISO8601(),
     body('status').not().isEmpty().isNumeric(),
     header('token').not().isEmpty().trim().escape(),
     createStatusUpdate)

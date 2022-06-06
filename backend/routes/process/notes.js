@@ -19,9 +19,9 @@ router.get('/:process',
     getNotes)
 
 router.delete('/',
-    header('fromUser').not().isEmpty().isBoolean(),
+    header('fromuser').not().isEmpty().isBoolean(),
     header('process').not().isEmpty().isNumeric(),
-    header('date').not().isEmpty().isDate(),
+    header('date').not().isEmpty().isISO8601(),
     header('token').not().isEmpty().trim().escape(),
     deleteNote)
 
