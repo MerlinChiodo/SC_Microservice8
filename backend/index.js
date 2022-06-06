@@ -4,16 +4,23 @@ const port = 3000;
 const rabbitMQ = require('./controllers/rabbitMQ/rabbitMQReceive.js');
 
 /**
+ * RabbitMQ
+ */
+incomingEvents = []
+if(rabbitMQ.checkQueue(incomingEvents)<1){
+  console.log("RabbitMQ - Connection failed")
+}else{
+  console.log("RabbitMQ - Connected")
+}
+
+/**
  * Cronjobs
  */
-cron.schedule('0 */12 * * *', function() {
+cron.schedule('* * * * *', function() { // '0 */12 * * *'
   console.log('---------------------');
   console.log('Running Daily Cron Job');
   //Daily check of RabbitMQ,...
-  if(rabbitMQ.checkQueue()<1){
-    console.log('Cron job failed')
-  }
-  console.log('---------------------');
+  rabbitMQ.processEvents(incomingEvents);
 });
 
 app.listen(port, () => console.log(`Finanzamt-backend listening at http://localhost:${port}`))

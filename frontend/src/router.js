@@ -9,8 +9,10 @@ const Submit = () => import("./views/account/submit.vue")
 const Operations = () => import("./views/account/processes.vue")
 const Operation = () => import("./views/account/process.vue")
 const NotFound = () => import("./views/NotFound.vue")
+const Spenden = () => import("./views/donations.vue")
 //Staff pages 
 const Internal_operations = () => import("./views/internal/processes.vue")
+const faulty_events = () => import("./views/internal/faultyEvents.vue")
 const routes = [
   {
     path: "/",
@@ -43,6 +45,11 @@ const routes = [
     component: Submit,
   },
   {
+    path: "/spenden",
+    name: "Spenden",
+    component: Spenden,
+  },
+  {
     path: "/Konto/Vorgaenge",
     name: "Vorgänge",
     component: Operations,
@@ -56,6 +63,11 @@ const routes = [
     path: "/Intern/Vorgaenge",
     name: "Interne Vorgänge",
     component: Internal_operations,
+  },
+  {
+    path: "/Intern/Events",
+    name: "Fehlerhafte Events",
+    component: faulty_events,
   },
   {
     path: "/upload",
