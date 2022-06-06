@@ -15,7 +15,8 @@
           </div>
         </div>
         <div class="col-sm">
-          <a :href="'/konto/vorgang?id='+process.id" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Detailansicht</a>
+          <a v-if="!sign" :href="'/konto/vorgang?id='+process.id" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Detailansicht</a>
+          <a v-else :href="'/intern/vorgang?id='+process.id" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Detailansicht</a>
         </div>
       </div>
     </div>

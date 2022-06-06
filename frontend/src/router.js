@@ -11,6 +11,7 @@ const Operation = () => import("./views/account/process.vue")
 const NotFound = () => import("./views/NotFound.vue")
 const Spenden = () => import("./views/donations.vue")
 //Staff pages 
+const Internal_operation = () => import("./views/internal/process.vue")
 const Internal_operations = () => import("./views/internal/processes.vue")
 const faulty_events = () => import("./views/internal/faultyEvents.vue")
 const routes = [
@@ -63,6 +64,11 @@ const routes = [
     path: "/Intern/Vorgaenge",
     name: "Interne Vorgänge",
     component: Internal_operations,
+  },
+  {
+    path: "/Intern/Vorgang",
+    name: "Interner Vorgang",
+    component: Internal_operation,
   },
   {
     path: "/Intern/Events",
