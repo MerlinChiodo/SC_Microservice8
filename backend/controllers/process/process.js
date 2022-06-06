@@ -1,4 +1,6 @@
 const {validationResult} = require('express-validator');
+const prismaClient = require('../../prismaClient');
+const Prisma = require('@prisma/client')
 const auth = require('../auth');
 
 const createProcess = async (req, res) => {
@@ -19,6 +21,20 @@ const getProcess = async (req,res) => {
         return res.status(422).json({ errors: errors.array()[0] });
     }
     if(auth.auth()){
+        const result = await prismaClient.process.findUnique({
+            where: {
+                id: parseInt(req.params['id'])
+            },
+            include: {
+                citizens: true,
+                worker: true,
+                processTypes: true,
+                statusUpdates: true
+            },
+        })
+        if(result){
+            return res.status(200).json({ message: "Found the process", process: result });
+        }
         return res.status(404).json({ message: "Could not find this process" });
     }else{
         return res.status(401).json({ message: "Sorry, you have no rights to do this" });
