@@ -30,6 +30,8 @@ const forms = require('./routes/internal/forms.js')
 const blogEntries = require('./routes/internal/blogEntry.js')
 const worker = require('./routes/internal/worker.js')
 const deadline = require('./routes/internal/deadline.js')
+const faultyEvents = require('./routes/internal/faultyEvents.js');
+
 
 /**
  * Routes
@@ -50,6 +52,7 @@ app.use('/api/forms', forms)
 app.use('/api/blogEntries', blogEntries)
 app.use('/api/worker', worker)
 app.use('/api/deadline', deadline)
+app.use('/api/faultyEvents', faultyEvents)
 
 // Use history for delivering Vue.js 
 app.use(history());
