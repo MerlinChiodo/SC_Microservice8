@@ -47,7 +47,23 @@ const getAllProcesses = async (req,res) => {
         return res.status(422).json({ errors: errors.array()[0] });
     }
     if(auth.auth()){
-        return res.status(404).json({ message: "Could not find any process" });
+        userid = 0; //get from token
+        const result = await prismaClient.process.findMany({
+            where: {
+                citizens: {id: userid}
+            },
+            include: {
+                citizens: true,
+                worker: true,
+                processTypes: true,
+                statusUpdates: true
+            },
+        })
+        if(result.length == 0){
+            return res.status(404).json({ message: "No processes were found", result:[] });
+        }else{
+            return res.status(200).json({ message: result.length+" processes were found", result });
+        }
     }else{
         return res.status(401).json({ message: "Sorry, you have no rights to do this" });
     } 

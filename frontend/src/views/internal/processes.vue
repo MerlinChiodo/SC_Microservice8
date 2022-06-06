@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <ProcessCards :processes="processes" :year="year" :sign="sign" />
+    <ProcessCards :processes="processes" :year="year" :sign="processes[0].worker.sign" />
     <br />
     <button type="button" @click="newProcess()" class="btn btn-primary">
       Neuer Vorgang
@@ -14,17 +14,32 @@ export default {
   name: "Vorgänge",
   data() {
     return {
-      processes: [
-        { type: "A", status: "2", name: "Müller" },
-        { type: "B", status: "3", name: "Ano" },
-      ],
-      year: 2019,
-      sign: "Meier",
+      processes: null,
+      year: 2019
     };
   },
   components: {
     ProcessCards,
   },
-  methods: {},
+  mounted: function () {
+    this.getProcesses();
+  },
+  methods: {
+    async getProcesses() {
+      const options = {
+        method: "GET",
+        headers: { token: "1234" },
+      };
+      await fetch("/api/process/All", options)
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.result) {
+            this.processes = data.result;
+          } else {
+            this.$router.push("NotFound");
+          }
+        });
+    },
+  },
 };
 </script>

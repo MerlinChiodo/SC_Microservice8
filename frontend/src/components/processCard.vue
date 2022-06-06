@@ -5,35 +5,17 @@
     <div v-for="process in processes" :key="process.id" class="card mt-10 mb-10">
       <div class="row">
         <div class="col-sm">
-          {{ process.type }}
+          {{ process.processTypes.name }}
         </div>
         <div class="col-sm">
-          <div class="row" style="height:50px">
-                <div class="col-sm"  v-if="!sign" style="background-color:rgba(2, 0, 36, 1);color:white">
-                    Eingereicht
-                </div>
-                <div v-if="process.status==1||process.status==3" class="col-sm" style="background-color:rgba(2, 0, 36, 1);color:white">
-                    In Bearbeitung
-                </div>
-                <div v-else-if="process.status==2" class="col-sm" style="background-color:rgba(245, 0, 10, 1);color:white">
-                    Rückfrage
-                </div>
-                <div v-else class="col-sm">
-                    In Bearbeitung
-                </div>
-                <div v-if="process.status==3" class="col-sm" style="background-color:rgba(2, 0, 36, 1);color:white">
-                    Abgeschlossen
-                </div>
-                <div v-else class="col-sm">
-                    Abgeschlossen
-                </div>
-            </div>
-        </div>
-        <div class="col-sm" v-if="sign">
-          {{ process.name }}
+          <ProcessStatusCard :statusUpdates="process.statusUpdates" />
+          <div v-if="sign">
+            <br>
+            {{ process.citizens }}
+          </div>
         </div>
         <div class="col-sm">
-          <button class="btn btn-primary" type="button">Detailansicht</button>
+          <a :href="'/konto/vorgang?id='+process.id" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Detailansicht</a>
         </div>
       </div>
     </div>
@@ -41,6 +23,7 @@
 </template>
 
 <script>
+import ProcessStatusCard from "./processStatusCard.vue";
 export default {
   name: "Processes",
   props: {
@@ -57,5 +40,8 @@ export default {
       required: false,
     }
   },
+  components: {
+    ProcessStatusCard
+  }
 };
 </script>

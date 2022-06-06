@@ -13,7 +13,7 @@ const createNote = async (req, res) => {
         try{
             const result = await prismaClient.note.create({ 
                 data: {
-                    process: req.body.process,
+                    process_noteToprocess: { connect: { id: parseInt(req.body.process) } },
                     text: req.body.text,
                     fromUser: fromUser,
                     date: req.body.date != null ? req.body.date : undefined,
@@ -26,10 +26,9 @@ const createNote = async (req, res) => {
                     // Foreign key constraint failed on the field -> process unknown
                     return res.status(400).json({ message: "Unknown process" });
                 }
-                return res.status(422).json({ message: "Could not create note" });
             }
             // Other error (should not happen)
-            return res.status(500).json({ message: "Internal server error" });
+            return res.status(422).json({ message: "Could not create note" });
         }
         return res.status(201).json({ message: "The note was created" });
     }else{
