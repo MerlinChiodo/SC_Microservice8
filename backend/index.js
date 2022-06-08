@@ -2,11 +2,13 @@ const app = require('./app.js');
 const cron = require('node-cron');
 const port = 3000;
 const rabbitMQ = require('./controllers/rabbitMQ/rabbitMQReceive.js');
+const rabbitMQSender = require('./controllers/rabbitMQ/rabbitMQSend.js');
 
 /**
  * RabbitMQ
  */
 incomingEvents = []
+rabbitMQSender.connect();
 if(rabbitMQ.checkQueue(incomingEvents)<1){
   console.log("RabbitMQ - Connection failed")
 }else{
