@@ -3,7 +3,6 @@
     <h2>Fristen</h2>
     <br />
     <DeadlineCard :deadlines="deadlines" :admin="true" v-if="deadlines"/>
-    {{this.deadline}}
     <br />
   </div>
 </template>
