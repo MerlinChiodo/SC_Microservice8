@@ -6,3 +6,13 @@ button:hover, .btn-primary:hover {
     background-color: rgb(2, 0, 36);
     border-color: rgb(2, 0, 36);
 }
+
+.notification-container{
+    min-width:300px;
+    margin-left: 37%;
+    position: fixed;
+    top:0px;
+    left:auto;
+    right:auto;
+    z-index:99;
+}
