@@ -12,6 +12,7 @@ const NotFound = () => import("./views/NotFound.vue")
 const Spenden = () => import("./views/donations.vue")
 //Staff pages 
 const Internal_operation = () => import("./views/internal/process.vue")
+const Landingpage_events = () => import("./views/internal/landingpage.vue")
 const Internal_operations = () => import("./views/internal/processes.vue")
 const faulty_events = () => import("./views/internal/faultyEvents.vue")
 const routes = [
@@ -74,6 +75,11 @@ const routes = [
     path: "/Intern/Events",
     name: "Fehlerhafte Events",
     component: faulty_events,
+  },
+  {
+    path: "/Intern/Landingpage",
+    name: "Landingpage Events",
+    component: Landingpage_events,
   },
   {
     path: "/upload",
