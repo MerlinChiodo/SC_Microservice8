@@ -34,6 +34,7 @@ async function publish(event, routingKey, schema) {
             } else {
                 console.log(`RabbitMQ: sent event AJV - FAIL`);
             }
+            channel.close()
         })
     }
 }

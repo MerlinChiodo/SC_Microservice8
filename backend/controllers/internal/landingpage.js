@@ -42,7 +42,7 @@ const deleteService = async (req, res) => {
             date: ce_time,
         }
         console.log(jsevent)
-        rabbitMQSend.publish(jsevent, '*.*', deleteSchema);
+        rabbitMQSend.publish(jsevent, '*.landingpage', deleteSchema);
         return res.status(200).json({ message: "Event was sent" });
     }else{
         return res.status(401).json({ message: "Sorry, you have no rights to do this" });

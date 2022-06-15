@@ -1,6 +1,8 @@
 const amqp = require('amqplib/callback_api.js');
 const Ajv = require('ajv');
+const addFormats = require("ajv-formats")
 const DonationRabbitMQSchema = require('./events/donationEvent.js');
+const CitizenNewSchema = require('./events/citizenEvent.js');
 const prismaClient = require('../../prismaClient');
 const fetch = require('node-fetch');
 
@@ -13,8 +15,24 @@ async function storeFaultyEvent(id,content){
     })
 }
 
-function processCitizenReports(event){
-    
+async function processNewCitizen(event){
+    var ajv = new Ajv();
+    addFormats(ajv);
+    if (!ajv.validate(CitizenNewSchema, event)) {
+        console.log(ajv.errors);
+        storeFaultyEvent(1001, event);
+    }else{
+        const body = {};
+        await fetch('http://localhost:3000/api/citizen', {method: 'POST', body: JSON.stringify(body), headers: {'token':"1234",'Content-Type':"application/json"}})
+        .then(response => {
+            if(response.status === 201){
+                console.log("Citizen was created")
+            }else{
+                // Faulty citizen (wrong content)
+                storeFaultyEvent(1001,event).then(console.log("Faulty citizen"))
+            }
+          });
+    }
 }
 
 async function processDonation(event){
@@ -63,7 +81,7 @@ function checkQueue(incomingEvents){
                 try{
                     incomingEvents.push(JSON.parse(msg.content))
                 }catch(error){
-                    console.log("Faulty Event")
+                    console.log("Faulty Event",error)
                     return
                 }
             }, {
@@ -81,6 +99,9 @@ module.exports = {
             switch (item.event_id) {
                 case 9003:
                     processDonation(item);
+                    break;
+                case 1001:
+                    processNewCitizen(item);
                     break;
                 default:
                     storeFaultyEvent(item.event_id,item)
