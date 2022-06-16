@@ -20,7 +20,7 @@ const updateService = async (req, res) => {
             about_us: req.body.aboutus, 
             picture: req.body.pictureurl
         }
-        rabbitMQSend.publish(jsevent, '*.*', updateSchema);
+        rabbitMQSend.publish(jsevent, 'public.finanzamt', updateSchema);
         return res.status(200).json({ message: "Event was sent" });
     }else{
         return res.status(401).json({ message: "Sorry, you have no rights to do this" });
@@ -42,7 +42,7 @@ const deleteService = async (req, res) => {
             date: ce_time,
         }
         console.log(jsevent)
-        rabbitMQSend.publish(jsevent, '*.*', deleteSchema);
+        rabbitMQSend.publish(jsevent, 'public.finanzamt', deleteSchema);
         return res.status(200).json({ message: "Event was sent" });
     }else{
         return res.status(401).json({ message: "Sorry, you have no rights to do this" });
