@@ -20,7 +20,6 @@ const createCitizen = async (req, res) => {
             })
             if(citizen){
                 return res.status(201).json({ message: "Citizen was created" });
-
             }else{
                 throw new Error("Could not create citizen");
             }
@@ -84,7 +83,7 @@ const deleteCitizen = async (req, res) => {
         return res.status(422).json({ errors: errors.array()[0] });
     }
     if(auth.auth()){
-        prismaClient.citizens.delete({
+        citizen = await prismaClient.citizens.delete({
             where: {
                 id: parseInt(req.params['id'])
             }

@@ -67,8 +67,8 @@ model couples {
   partner2                            Int?
   child_amount                        Int
   date                                DateTime  @default(now()) @db.Timestamp(0)
-  citizens_citizensTocouples_partner1 citizens  @relation("citizensTocouples_partner1", fields: [partner1], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "couples_ibfk_1")
-  citizens_citizensTocouples_partner2 citizens? @relation("citizensTocouples_partner2", fields: [partner2], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "couples_ibfk_2")
+  citizens_citizensTocouples_partner1 citizens  @relation("citizensTocouples_partner1", fields: [partner1], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "couples_ibfk_1")
+  citizens_citizensTocouples_partner2 citizens? @relation("citizensTocouples_partner2", fields: [partner2], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "couples_ibfk_2")
 
   @@id([partner1, date])
   @@index([partner2], map: "partner2")
