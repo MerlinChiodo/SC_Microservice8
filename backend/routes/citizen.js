@@ -8,18 +8,19 @@ router.use(express.json())
 
 router.post('/',
     body('id').not().isEmpty().isNumeric(),
-    body('name').not().isEmpty().isAlpha(),
-    body('lastname').not().isEmpty().isAlpha(),
+    body('name').not().isEmpty(),
+    body('lastname').not().isEmpty(),
     body('email').not().isEmpty().isEmail(),
-    body('birthday').not().isEmpty().isDate(),
+    body('birthday').not().isEmpty().isISO8601(),
     header('token').not().isEmpty().trim().escape(),
     createCitizen)
 
 router.put('/',
     body('id').not().isEmpty().isNumeric(),
-    body('name').optional().isAlpha(),
-    body('lastname').optional().isAlpha(),
+    body('name').optional(),
+    body('lastname').optional(),
     body('email').optional().isEmail(),
+    body('birthday').optional().isISO8601(),
     header('token').not().isEmpty().trim().escape(),
     editCitizen)
 

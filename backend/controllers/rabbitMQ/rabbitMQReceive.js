@@ -2,7 +2,7 @@ const amqp = require('amqplib/callback_api.js');
 const Ajv = require('ajv');
 const addFormats = require("ajv-formats")
 const DonationRabbitMQSchema = require('./events/donationEvent.js');
-const {CitizenNewSchema, CitizenChangeSchema, CitizenDeathSchema, CitizenDivorceSchema, citizenMarriageSchema, CitizenMarriageSchema} = require('./events/citizenEvent.js');
+const { CitizenNewSchema, CitizenChangeSchema, CitizenDeathSchema, CitizenDivorceSchema, citizenMarriageSchema, CitizenMarriageSchema } = require('./events/citizenEvent.js');
 const prismaClient = require('../../prismaClient');
 const fetch = require('node-fetch');
 
@@ -13,6 +13,25 @@ async function storeFaultyEvent(id, content) {
             eventId: parseInt(id)
         },
     })
+}
+
+async function getAllCitizenDetails(citizenId) {
+    return fetch('http://vps2290194.fastwebserver.de:9710/api/citizen/' + citizenId, { method: 'GET', headers: { 'token': "1234" } })
+        .then(response => response.json())
+        .then(data => {
+            return data;
+        });
+}
+
+async function getCitizenDetails(citizenId) {
+    data = await getAllCitizenDetails(citizenId);
+    return {
+        id: data.citizen_id,
+        name: data.firstname,
+        lastname: data.lastname,
+        email: data.email,
+        birthday: data.birthdate
+    };
 }
 
 function validator(event, schema, callback) {
@@ -27,12 +46,11 @@ function validator(event, schema, callback) {
 }
 
 async function processNewCitizen(event) {
-    const body = {};
-    await fetch('http://localhost:3000/api/citizen', { method: 'POST', body: JSON.stringify(body), headers: { 'token': "1234", 'Content-Type': "application/json" } })
+    citizen = await getCitizenDetails(event.citizen_id);
+    await fetch('http://localhost:3000/api/citizen', { method: 'POST', body: JSON.stringify(citizen), headers: { 'token': "1234", 'Content-Type': "application/json" } })
         .then(response => {
             if (response.status === 201) {
                 console.log("Citizen was created")
-                updateCitizen(event);
             } else {
                 // Faulty citizen (wrong content)
                 storeFaultyEvent(1001, event).then(console.log("Faulty citizen"))
@@ -41,21 +59,79 @@ async function processNewCitizen(event) {
 }
 
 async function updateCitizen(event) {
-    console.log("UpdateCitizen")
+    // check if citizen exists
+    citizen = await prismaClient.citizens.findUnique({
+        where: {
+            id: event.citizen_id
+        }
+    });
+    if (citizen) {
+        // update citizen
+        citizend = await getCitizenDetails(event.citizen_id);
+        await fetch('http://localhost:3000/api/citizen', { method: 'put', body: JSON.stringify(citizend), headers: { 'token': "1234", 'Content-Type': "application/json" } })
+            .then(response => {
+                if (response.status === 200) {
+                    console.log("Citizen was updated")
+                } else {
+                    // Faulty citizen (wrong content)
+                    storeFaultyEvent(1002, event).then(console.log("Faulty citizen update"))
+                }
+            });
+    } else {
+        //create citizen
+        processNewCitizen(event);
+    }
 }
 
 async function citizenMarriage(event) {
-    console.log("CitizenMarriage")
+    citizen1 = await getAllCitizenDetails(event.partners.citizen_id_1);
+    citizen2 = await getAllCitizenDetails(event.partners.citizen_id_2);
+    try {
+        await prismaClient.couples.create({
+            data: {
+                partner1: citizen1.citizen_id,
+                partner2: citizen2.citizen_id,
+                child_amount: Object.keys(citizen2.child_ids).length + Object.keys(citizen1.child_ids).length
+            }
+        });
+        console.log("Marriage was successful");
+    } catch (err) {
+        storeFaultyEvent(event.event_id, event);
+        console.log("Marriage failed");
+    }
 
 }
 
 async function citizenDivorce(event) {
-    console.log("CitizenDivorce")
-
+    citizen1 = await getAllCitizenDetails(event.partners.citizen_id_1);
+    citizen2 = await getAllCitizenDetails(event.partners.citizen_id_2);
+    try {
+        await prismaClient.couples.create({
+            data: {
+                partner1: citizen1.citizen_id,
+                child_amount: Object.keys(citizen1.child_ids).length
+            }
+        });
+        console.log("Partner1 was divorced");
+    } catch (err) {
+        console.log("Divorce failed");
+    }
+    try {
+        await prismaClient.couples.create({
+            data: {
+                partner1: citizen2.citizen_id,
+                child_amount: Object.keys(citizen2.child_ids).length
+            }
+        });
+        console.log("Partner2 was divorced");
+    } catch (err) {
+        console.log("Divorce failed");
+        storeFaultyEvent(event.event_id, event);
+    }
 }
 
 async function citizenDeath(event) {
-    await fetch('http://localhost:3000/api/citizen'+event.citizen_id, { method: 'delete', headers: { 'token': "1234", 'Content-Type': "application/json" } })
+    await fetch('http://localhost:3000/api/citizen/' + event.citizen_id, { method: 'delete', headers: { 'token': "1234" } })
         .then(response => {
             if (response.status === 200) {
                 console.log("Citizen was removed")

@@ -34,7 +34,7 @@ model citizens {
   lastname                           String         @db.VarChar(255)
   name                               String         @db.VarChar(255)
   email                              String?        @db.VarChar(255)
-  birthday                           DateTime?      @db.Timestamp(0)
+  birthday                           DateTime?      @db.Date
   appointments                       appointments[]
   companies                          companies[]
   couples_citizensTocouples_partner1 couples[]      @relation("citizensTocouples_partner1")
@@ -64,13 +64,13 @@ model contactrequest {
 
 model couples {
   partner1                            Int
-  partner2                            Int
+  partner2                            Int?
   child_amount                        Int
-  date                                DateTime @default(now()) @db.Timestamp(0)
-  citizens_citizensTocouples_partner1 citizens @relation("citizensTocouples_partner1", fields: [partner1], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "couples_ibfk_1")
-  citizens_citizensTocouples_partner2 citizens @relation("citizensTocouples_partner2", fields: [partner2], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "couples_ibfk_2")
+  date                                DateTime  @default(now()) @db.Timestamp(0)
+  citizens_citizensTocouples_partner1 citizens  @relation("citizensTocouples_partner1", fields: [partner1], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "couples_ibfk_1")
+  citizens_citizensTocouples_partner2 citizens? @relation("citizensTocouples_partner2", fields: [partner2], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "couples_ibfk_2")
 
-  @@id([partner1, partner2, date])
+  @@id([partner1, date])
   @@index([partner2], map: "partner2")
 }
 
