@@ -25,7 +25,7 @@ const createDeadline = async (req, res) => {
             short_description: ce_descr,
             event_on: ce_time
         }
-        rabbitMQSend.publish(jsevent, '*.*', ForumCalendarRabbitMQSchema);
+        rabbitMQSend.publish(jsevent, 'public.finanzamt', ForumCalendarRabbitMQSchema);
         try {
             const result = await prismaClient.deadlines.create({
                 data: {
