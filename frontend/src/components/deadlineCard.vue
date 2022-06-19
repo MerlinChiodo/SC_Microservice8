@@ -22,7 +22,7 @@
             </div>
             <div class="form-group">
               <label for="time">Zeit</label><br>
-              <input type="datetime-local" id="time" name="Zeit" value="2022-01-01" min="2000-01-01" max="2100-12-31" v-model="date">
+              <input type="datetime-local" id="time" name="Zeit" min="2000-01-01" max="2100-12-31" v-model="date">
             </div>
           </form>
         <div class="modal-footer">
