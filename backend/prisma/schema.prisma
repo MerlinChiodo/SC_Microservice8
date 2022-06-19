@@ -128,7 +128,7 @@ model note {
 }
 
 model process {
-  id            Int             @id
+  id            Int             @id @default(autoincrement())
   type          Int
   date          DateTime        @default(now()) @db.Timestamp(0)
   customer      Int?
