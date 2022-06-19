@@ -2,7 +2,7 @@
   <div class="wrapper" v-if="filterByYear(year).length>0">
     <h5 v-if="!sign">Steuerjahr {{year}}</h5>
     <h5 v-else>Laufende Prozesse: Sachbearbeiter {{sign}}</h5>
-    <div v-for="process in filterByYear(year)" :key="process.id" class="card mt-10 mb-10">
+    <div v-for="process in sign?processes:filterByYear(year)" :key="process.id" class="card mt-10 mb-10">
       <div class="row" v-if="process">
         <div class="col-sm">
           {{ process.processTypes.name }}

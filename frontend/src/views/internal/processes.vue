@@ -1,6 +1,7 @@
 <template>
   <div class="container">
-    <ProcessCards :processes="processes" :year="year" :sign="processes[0].worker.sign" />
+    <h5 v-if="!processes || processes.length==0">Es wurden keine Vorgänge gefunden</h5>
+    <ProcessCards :processes="processes" :year="year" :sign="processes[0].worker.sign" v-if="processes"/>
     <br />
     <button type="button" @click="newProcess()" class="btn btn-primary">
       Neuer Vorgang
@@ -15,7 +16,7 @@ export default {
   data() {
     return {
       processes: null,
-      year: 2019
+      year: new Date().getFullYear()
     };
   },
   components: {
