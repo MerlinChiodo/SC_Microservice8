@@ -38,6 +38,18 @@
                 Aktuelles
               </router-link>
             </li>
+            <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Konto
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <li class="nav-item">
+              <router-link to="/Konto/Vorgaenge" class="nav-link">
+                Vorgänge
+              </router-link>
+            </li>
+            </ul>
+          </li>
           </ul>
           <form class="d-flex">
             <button class="btn btn-outline-success" type="submit">Login</button>

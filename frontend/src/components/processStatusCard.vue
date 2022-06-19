@@ -49,7 +49,11 @@ export default {
     }
   },
   mounted: function () {
-    this.status = this.statusUpdates[this.statusUpdates.length-1].status;
+    if(this.statusUpdates == null || this.statusUpdates.length == 0){
+      this.status = 0;
+    }else{
+      this.status = this.statusUpdates[this.statusUpdates.length-1].status;
+    }
   }
 };
 </script>

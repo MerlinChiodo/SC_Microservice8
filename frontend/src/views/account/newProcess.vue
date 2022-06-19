@@ -44,7 +44,6 @@
             <br><br>
             <div class="d-flex justify-content-center btn-group-vertical">
                 <button type="button" class="btn btn-primary btn-lg btn-block" @click="$router.push('/Konto/Vorgaenge')">Zu meinen Vorgängen</button>
-                <button type="button" class="btn btn-secondary btn-lg btn-block">Vorgang ansehen</button>
             </div>
             <br>
         </div>
@@ -66,7 +65,7 @@ export default {
       year: 0,
       state: 0,
       processType: 1,
-      processTypes: null,
+      processTypes: null
     };
   },
   mounted: function () {
@@ -98,7 +97,7 @@ export default {
                 "token": "1234"
             },
             body: JSON.stringify({
-                year: this.year,
+                dateOffset: this.year,
                 type: this.processType
             })
         };
