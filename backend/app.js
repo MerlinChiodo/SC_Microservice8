@@ -32,6 +32,7 @@ const worker = require('./routes/internal/worker.js')
 const deadline = require('./routes/internal/deadline.js')
 const faultyEvents = require('./routes/internal/faultyEvents.js');
 const landingpageEvents = require('./routes/internal/landingpage.js');
+const processTypes = require('./routes/internal/processTypes.js');
 
 
 /**
@@ -55,6 +56,7 @@ app.use('/api/worker', worker)
 app.use('/api/deadline', deadline)
 app.use('/api/faultyEvents', faultyEvents)
 app.use('/api/landingpage', landingpageEvents)
+app.use('/api/processTypes', processTypes)
 
 // Use history for delivering Vue.js 
 app.use(history());

@@ -8,9 +8,9 @@ router.use(express.json())
 
 router.post('/',
     body('type').not().isEmpty().isNumeric(),
-    body('customer').not().isEmpty().isNumeric(),
-    body('official').not().isEmpty().isNumeric(),
-    body('date').optional().isDate(),
+    body('customer').optional().isNumeric(),
+    body('official').optional().isNumeric(),
+    body('dateOffset').not().isEmpty().isInt({ min: 0 , max: 2}),
     header('token').not().isEmpty().trim().escape(),
     createProcess)
 

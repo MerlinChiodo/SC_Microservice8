@@ -1,9 +1,14 @@
 <template>
   <div class="container">
     <h3>Vorgänge</h3>
+    <h5 v-if="processes.length==0">Es wurden keine Vorgänge gefunden</h5>
+    <ProcessCards :processes="processes" :year="year-4" v-if="processes"/>
+    <ProcessCards :processes="processes" :year="year-3" v-if="processes"/>
+    <ProcessCards :processes="processes" :year="year-2" v-if="processes"/>
+    <ProcessCards :processes="processes" :year="year-1" v-if="processes"/>
     <ProcessCards :processes="processes" :year="year" v-if="processes"/>
     <br />
-    <button type="button" @click="newProcess()" class="btn btn-primary">
+    <button type="button" @click="$router.push('/Konto/Neuer_Vorgang')" class="btn btn-primary">
       Neuer Vorgang
     </button>
   </div>
@@ -16,7 +21,7 @@ export default {
   data() {
     return {
       processes: null,
-      year: 2019,
+      year: new Date().getFullYear(),
     };
   },
   components: {

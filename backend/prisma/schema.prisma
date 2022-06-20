@@ -67,11 +67,11 @@ model couples {
   partner2                            Int?
   child_amount                        Int
   date                                DateTime  @default(now()) @db.Timestamp(0)
-  citizens_citizensTocouples_partner1 citizens  @relation("citizensTocouples_partner1", fields: [partner1], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "couples_ibfk_1")
-  citizens_citizensTocouples_partner2 citizens? @relation("citizensTocouples_partner2", fields: [partner2], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "couples_ibfk_2")
+  citizens_citizensTocouples_partner1 citizens  @relation("citizensTocouples_partner1", fields: [partner1], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "couples_ibfk_1")
+  citizens_citizensTocouples_partner2 citizens? @relation("citizensTocouples_partner2", fields: [partner2], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "couples_ibfk_2")
 
   @@id([partner1, date])
-  @@index([partner2], map: "partner2")
+  @@index([partner2], map: "couples_ibfk_2")
 }
 
 model donation {
@@ -128,7 +128,7 @@ model note {
 }
 
 model process {
-  id            Int             @id
+  id            Int             @id @default(autoincrement())
   type          Int
   date          DateTime        @default(now()) @db.Timestamp(0)
   customer      Int?
@@ -146,7 +146,7 @@ model process {
 }
 
 model processTypes {
-  id          Int       @id
+  id          Int       @id @default(autoincrement())
   name        String    @db.VarChar(255)
   description String    @db.Text
   process     process[]

@@ -57,7 +57,11 @@ export default {
         .then((data) => {
           if (data.process) {
             this.processDetails = data.process;
-            this.status = data.process.statusUpdates[data.process.statusUpdates.length-1].status;
+            if(!data.process.statusUpdates || data.process.statusUpdates.length == 0){
+              this.status = 0;
+            }else{
+              this.status = data.process.statusUpdates[data.process.statusUpdates.length-1].status
+            }
           } else {
             this.$router.push("NotFound");
           }

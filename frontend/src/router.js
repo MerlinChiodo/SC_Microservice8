@@ -8,6 +8,7 @@ const Contact = () => import("./views/contact.vue")
 const Submit = () => import("./views/account/submit.vue")
 const Operations = () => import("./views/account/processes.vue")
 const Operation = () => import("./views/account/process.vue")
+const newOperation = () => import("./views/account/newProcess.vue")
 const NotFound = () => import("./views/NotFound.vue")
 const Spenden = () => import("./views/donations.vue")
 //Staff pages 
@@ -60,6 +61,11 @@ const routes = [
     path: "/Konto/Vorgang",
     name: "Vorgange",
     component: Operation,
+  },
+  {
+    path: "/Konto/Neuer_Vorgang",
+    name: "Neuer Vorgang",
+    component: newOperation,
   },
   {
     path: "/Intern/Vorgaenge",

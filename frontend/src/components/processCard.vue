@@ -1,9 +1,9 @@
 <template>
-  <div class="wrapper">
+  <div class="wrapper" v-if="filterByYear(year).length>0">
     <h5 v-if="!sign">Steuerjahr {{year}}</h5>
     <h5 v-else>Laufende Prozesse: Sachbearbeiter {{sign}}</h5>
-    <div v-for="process in processes" :key="process.id" class="card mt-10 mb-10">
-      <div class="row">
+    <div v-for="process in sign?processes:filterByYear(year)" :key="process.id" class="card mt-10 mb-10">
+      <div class="row" v-if="process">
         <div class="col-sm">
           {{ process.processTypes.name }}
         </div>
@@ -43,6 +43,11 @@ export default {
   },
   components: {
     ProcessStatusCard
+  },
+  methods: {
+    filterByYear(year){
+      return this.processes.filter(process => process.date.substring(0,4) == year);
+    }
   }
 };
 </script>
