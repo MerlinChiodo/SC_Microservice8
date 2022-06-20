@@ -9,6 +9,9 @@
   },
   "dependencies": {
     "core-js": "^3.6.5",
+    "html-to-image": "^1.9.0",
+    "jspdf": "^2.5.1",
+    "qrcode": "^1.5.0",
     "vue": "^3.0.0",
     "vue-router": "^4.0.14",
     "vue3-vt-notifications": "^1.0.1"

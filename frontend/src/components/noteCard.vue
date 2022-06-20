@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <h3>Notizen</h3>
-    <div class="notizen">
+    <div class="notizen" id="pNotes">
       <p
         v-for="item in allNotes"
         :key="item.id"
