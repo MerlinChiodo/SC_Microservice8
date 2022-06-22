@@ -74,7 +74,7 @@ const routes = [
     component: newOperation,
   },
   {
-    path: "/Intern/Vorgaenge",
+    path: "/Intern/Vorgaenge/:user",
     name: "Interne Vorgänge",
     component: Internal_operations,
   },

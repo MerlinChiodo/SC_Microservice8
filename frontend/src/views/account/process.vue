@@ -52,14 +52,9 @@ export default {
   },
   methods: {
     async getProcess() {
-      const options = {
-        method: "GET",
-        headers: { token: "1234" },
-      };
-      await fetch("/api/process/" + this.process, options)
-        .then((response) => response.json())
-        .then((data) => {
-          if (data.process) {
+      let data = await this.fetch_get({} ,"/api/process/" + this.process);
+      if(data){
+        if (data.process) {
             this.processDetails = data.process;
             if(!data.process.statusUpdates || data.process.statusUpdates.length == 0){
               this.status = 0;
@@ -69,7 +64,7 @@ export default {
           } else {
             this.$router.push("NotFound");
           }
-        });
+      }
     },
     async exportPDF() {
       let processLink = 'http://vps2290194.fastwebserver.de:9780/konto/vorgang?id='+this.processDetails.id;

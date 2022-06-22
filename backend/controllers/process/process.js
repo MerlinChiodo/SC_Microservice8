@@ -37,18 +37,18 @@ const getProcess = async (req,res) => {
     if(!errors.isEmpty()){
         return res.status(422).json({ errors: errors.array()[0] });
     }
-    if(auth.auth()){
-        const result = await prismaClient.process.findUnique({
-            where: {
-                id: parseInt(req.params['id'])
-            },
-            include: {
-                citizens: true,
-                worker: true,
-                processTypes: true,
-                statusUpdates: {orderBy: [{date: 'asc',}]}
-            },
-        })
+    const result = await prismaClient.process.findUnique({
+        where: {
+            id: parseInt(req.params['id'])
+        },
+        include: {
+            citizens: true,
+            worker: true,
+            processTypes: true,
+            statusUpdates: {orderBy: [{date: 'asc',}]}
+        },
+    });
+    if(auth.auth(req.headers.token, auth.accessLevels.citizen, result.customer)){
         if(result){
             return res.status(200).json({ message: "Found the process", process: result });
         }
@@ -63,11 +63,12 @@ const getAllProcesses = async (req,res) => {
     if(!errors.isEmpty()){
         return res.status(422).json({ errors: errors.array()[0] });
     }
-    if(auth.auth()){
-        userid = 0; //get from token
+    let reqUserID = req.query.user ? parseInt(req.query.user) : null;
+    let userID = await auth.auth(req.headers.token, auth.accessLevels.citizen, reqUserID)
+    if(userID > 0){
         const result = await prismaClient.process.findMany({
             where: {
-                citizens: {id: userid}
+                citizens: {id: userID}
             },
             include: {
                 citizens: true,

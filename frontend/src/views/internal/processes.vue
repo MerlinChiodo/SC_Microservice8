@@ -27,19 +27,13 @@ export default {
   },
   methods: {
     async getProcesses() {
-      const options = {
-        method: "GET",
-        headers: { token: "1234" },
-      };
-      await fetch("/api/process/All", options)
-        .then((response) => response.json())
-        .then((data) => {
-          if (data.result) {
-            this.processes = data.result;
-          } else {
-            this.$router.push("NotFound");
-          }
-        });
+      console.log(this.$route.params.user)
+      let data = await this.fetch_get({} ,"/api/process/All?user="+this.$route.params.user);
+      if(data){
+        this.processes = data.result;
+      }else {
+        this.$router.push("NotFound");
+      }
     },
   },
 };

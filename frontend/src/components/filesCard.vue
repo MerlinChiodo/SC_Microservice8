@@ -35,8 +35,6 @@ export default {
       let data = await this.fetch_get({ process: this.process } ,"/api/files/all");
       if(data){
         this.allFiles = data.result;
-      }else{
-        this.$notify({group: "error",title: "Fehler!",text: "Da ist etwas schiefgelaufen"},2000);
       }
     }
   }
