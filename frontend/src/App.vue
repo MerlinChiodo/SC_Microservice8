@@ -51,8 +51,11 @@
             </ul>
           </li>
           </ul>
-          <form class="d-flex">
-            <button class="btn btn-outline-success" type="submit">Login</button>
+          <form class="d-flex" v-if="!this.$cookies.isKey('f_token')">
+            <button class="btn btn-outline-success" type="button" @click="this.login()">Login</button>
+          </form>
+          <form class="d-flex" v-else>
+            <button class="btn btn-outline-danger" type="button" @click="this.logout()">Logout</button>
           </form>
         </div>
       </div>
@@ -138,7 +141,7 @@
       <!-- Copyright -->
       <div class="footer-copyright text-center py-3">
         © 2022 Copyright:
-        <a href="https://smartcity.com"> smartcity.com</a>
+        <a href="http://supersmartcity.de">supersmartcity.de</a>
       </div>
       <!-- Copyright -->
     </footer>
@@ -148,6 +151,15 @@
 <script>
 export default {
   name: "App",
-  components: {}
+  components: {},
+  methods: {
+      logout(){
+        this.$cookies.remove('f_token');
+        this.$forceUpdate();
+      },
+      login(){
+        this.initLogin();
+      }
+  }
 };
 </script>
