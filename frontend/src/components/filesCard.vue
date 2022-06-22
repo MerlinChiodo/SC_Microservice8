@@ -31,20 +31,14 @@ export default {
     this.loadFiles();
   },
   methods: {
-    loadFiles() {
-      const options = {
-        method: "GET",
-        headers: { token: "1234", process: this.process },
-      };
-      fetch("/api/files/all", options)
-        .then((response) => response.json())
-        .then((data) => {
-          this.allFiles = data.result;
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    },
-  },
+    async loadFiles() {
+      let data = await this.fetch_get({ process: this.process } ,"/api/files/all");
+      if(data){
+        this.allFiles = data.result;
+      }else{
+        this.$notify({group: "error",title: "Fehler!",text: "Da ist etwas schiefgelaufen"},2000);
+      }
+    }
+  }
 };
 </script>

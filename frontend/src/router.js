@@ -4,6 +4,7 @@ import Events from "./views/events.vue"
 import News from "./views/blog.vue"
 import Forms from "./views/forms.vue"
 import Upload from "./views/upload.vue"
+import Login from "./views/login.vue"
 const Contact = () => import("./views/contact.vue")
 const Submit = () => import("./views/account/submit.vue")
 const Operations = () => import("./views/account/processes.vue")
@@ -36,6 +37,11 @@ const routes = [
     path: "/Formulare",
     name: "Formulare",
     component: Forms,
+  },
+  {
+    path: "/Login/:destination",
+    name: "Login",
+    component: Login,
   },
   {
     path: "/Kontakt",
