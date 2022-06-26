@@ -23,18 +23,13 @@ export default {
       this.loadDeadlines()
   },
   methods: {
-      loadDeadlines(){
-        const options = {
-            method: 'GET',
-            headers: {'token':"1234"}
-        };
-        fetch('/api/deadline/all', options)
-        .then((response) => response.json())
-        .then((data) => {
-            console.log(data)
-            this.deadlines = data.result
-        })
-        .catch(error => {console.log(error)});
+      async loadDeadlines(){
+        let data = await this.fetch_get({} , '/api/deadline/all' );
+        if(data){
+          this.deadlines = data.result
+        }else{
+          this.$notify({group: "error",title: "Fehler!",text: "Da ist etwas schiefgelaufen",},2000);
+        }
       }
   },
 };

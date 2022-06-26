@@ -78,39 +78,25 @@ export default {
   },
   methods: {
     async getProcess() {
-      const options = {
-        method: "GET",
-        headers: { token: "1234" },
-      };
-      await fetch("/api/process/" + this.process, options)
-        .then((response) => response.json())
-        .then((data) => {
-          if (data.process) {
-            this.processDetails = data.process;
-            this.status = data.process.statusUpdates[data.process.statusUpdates.length-1].status;
-          } else {
-            this.$router.push("NotFound");
-          }
-        });
+      let data = await this.fetch_get({} , "/api/process/" + this.process );
+      if(data.process){
+        this.processDetails = data.process;
+        this.status = data.process.statusUpdates[data.process.statusUpdates.length-1].status;
+      }else{
+        this.$router.push("NotFound");
+      }
     },
-    addStatusUpdate(newStatus){
-      const options = {
-        method: "POST",
-        body: JSON.stringify({
+    async addStatusUpdate(newStatus){
+      let body = {
             process: this.process,
             status: newStatus
-        }),
-        headers: { "Content-Type": "application/json", token: "1234" },
-      };
-      this.state="waiting"
-      fetch("/api/statusUpdates/", options)
-      .then((response) => {
-        if (response.status == 201) {
-            this.state='done'
-        }
-        throw new Error('Something went wrong');
-       })
-      .catch(this.state='fail');
+          };
+      let data = await this.fetch_post({} ,body, "/api/statusUpdates/" );
+      if(data){
+        this.state='done';
+      }else{
+        this.state='fail';
+      }
     }
   },
 };

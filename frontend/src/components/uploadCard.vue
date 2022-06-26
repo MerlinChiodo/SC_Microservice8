@@ -12,7 +12,7 @@
         </div>
         <div class="mb-3">
             <label for="formFileLg" class="form-label">Datei</label><br>
-            <input class="form-control form-control-lg" id="formFileLg" type="file" @change="uploadFile" ref="file"/>
+            <input class="form-control form-control-lg" id="formFileLg" type="file" accept=".jpg,.png,.jpeg,.pdf" @change="uploadFile" ref="file"/>
         </div>
         <button type="button" class="btn btn-primary" @click="submitFile" data-bs-toggle="modal" data-bs-target="#exampleModal">Hochladen</button>
     </form>
@@ -23,7 +23,7 @@
         <div class="modal-content">
         <div class="modal-body d-flex justify-content-center">
             <h4 v-if="file==null">Bitte Datei auswählen</h4>
-            <h4 v-else-if="error!=null">Da ist etwas schiefgelaufen</h4>
+            <h4 v-else-if="error!=null">{{error}}</h4>
             <div v-else>
                 <div v-if="response==null" class="spinner-border" role="status">
                     <span class="sr-only"></span>
@@ -64,28 +64,28 @@ export default {
       uploadFile() {
         this.file = this.$refs.file.files[0];
       },
-      submitFile() {
+      async submitFile() {
         if(this.file==null){
             return
         }
         if(this.for_process!=undefined){
-            this.process = this.for_process
+            this.process = this.for_process;
         }
+        if(this.file.size > 5000000){
+            this.error = "Datei zu groß (max. 5MB)";
+            return
+        }
+        this.error = "Warte auf Antwort...";
         const formData = new FormData();
         formData.append('file', this.file);
         formData.append('processID', this.process);
-        const options = {
-            method: 'POST',
-            body: formData,
-            headers: {'token':"1234"}
-        };
-        fetch('/api/files', options)
-        .then((response) => response.json())
-        .then((data) => {
-            this.response = data;
-            this.error = null;
-        })
-        .catch(error => this.error=error);
+        let data = await this.fetch_post_formdata({} ,formData, "/api/files" );
+        if(data){
+          this.response = data;
+          this.error = null;
+        }else{
+          this.error = "Da ist etwas schiefgelaufen";
+        }
       }
     }
 };
