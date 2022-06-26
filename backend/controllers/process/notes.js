@@ -8,10 +8,22 @@ const createNote = async (req, res) => {
     if(!errors.isEmpty()){
         return res.status(422).json({ errors: errors.array()[0] });
     }
-    if(auth.auth()){
-        var fromUser = req.headers.token=='1234' //only for testing - get from token later
+    let result = await prismaClient.process.findMany({
+        where: {
+            id: {
+                equals: parseInt(req.body.process),
+            }
+        },
+        include: {
+            citizens: true
+        }
+    })
+    userID = await auth.auth(req.headers.token, auth.accessLevels.citizens, result[0].citizens.id);
+    reqID = await auth.getID(req.headers.token);
+    if(userID > 0){
+        var fromUser =  (reqID == userID);
         try{
-            const result = await prismaClient.note.create({ 
+            result = await prismaClient.note.create({ 
                 data: {
                     process_noteToprocess: { connect: { id: parseInt(req.body.process) } },
                     text: req.body.text,
@@ -41,7 +53,18 @@ const getNotes = async (req,res) => {
     if(!errors.isEmpty()){
         return res.status(422).json({ errors: errors.array()[0] });
     }
-    if(auth.auth()){
+    const result = await prismaClient.process.findMany({
+        where: {
+            id: {
+                equals: parseInt(req.params['process']),
+            }
+        },
+        include: {
+            citizens: true
+        }
+    })
+    userID = await auth.auth(req.headers.token, auth.accessLevels.citizens, result[0].citizens.id);
+    if(userID > 0){
         // get all files of process
         const result = await prismaClient.note.findMany({
             orderBy: [
@@ -70,7 +93,8 @@ const deleteNote = async (req, res) => {
     if(!errors.isEmpty()){
         return res.status(422).json({ errors: errors.array()[0] });
     }
-    if(auth.auth()){
+    userID = await auth(req.headers.token, accessLevels.worker);
+    if(userID > 0){
         try{
             const result = await prismaClient.note.delete({
                 where: {

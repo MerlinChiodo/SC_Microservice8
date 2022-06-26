@@ -8,10 +8,10 @@ const createProcess = async (req, res) => {
     if(!errors.isEmpty()){
         return res.status(422).json({ errors: errors.array()[0] });
     }
-    if(auth.auth()){
+    let userID = await auth.auth(req.headers.token, auth.accessLevels.citizen)
+    if(userID > 0){
         date = new Date()
         date.setFullYear(date.getFullYear() - req.body.dateOffset);
-        userID = req.body.customer ? parseInt(req.body.customer) :0; //get from token
         const result = await prismaClient.process.create({
             data: {
                 type: parseInt(req.body.type),
@@ -92,7 +92,16 @@ const deleteProcess = async (req, res) => {
     if(!errors.isEmpty()){
         return res.status(422).json({ errors: errors.array()[0] });
     }
-    if(auth.auth()){
+    const result = await prismaClient.process.findUnique({
+        where: {
+            id: parseInt(req.params['id'])
+        },
+        include: {
+            citizens: true,
+            worker: true
+        },
+    });
+    if(auth.auth(req.headers.token, auth.accessLevels.worker, result.citizens.id)){
         const result = await prismaClient.process.delete({
             where: {
                 id: parseInt(req.params['id'])
@@ -112,7 +121,16 @@ const editProcess = async (req, res) => {
     if(!errors.isEmpty()){
         return res.status(422).json({ errors: errors.array()[0] });
     }
-    if(auth.auth()){
+    const result = await prismaClient.process.findUnique({
+        where: {
+            id: parseInt(req.params['id'])
+        },
+        include: {
+            citizens: true,
+            worker: true
+        },
+    });
+    if(auth.auth(req.headers.token, auth.accessLevels.worker, result.citizens.id)){
         try{
             const result = await prismaClient.process.update({
                 where: {

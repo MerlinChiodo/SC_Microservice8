@@ -8,12 +8,12 @@ const accessLevels = {
 };
 Object.freeze(accessLevels);
 
-const auth = async (token, accessLevel, requestedID) => {
+async function getDataFromSmartAuth(token){
     const formBody = [];
     formBody.push(encodeURIComponent("code") + '=' + encodeURIComponent(token));
     citizen = null;
     if(token){
-        await fetch('http://auth.smartcityproject.net:8080/verify', { 
+        return await fetch('http://auth.smartcityproject.net:8080/verify', { 
             method: 'POST', 
             body: formBody.join('&'), 
             headers: { 'Content-Type': "application/x-www-form-urlencoded;charset=UTF-8" } 
@@ -27,10 +27,15 @@ const auth = async (token, accessLevel, requestedID) => {
         })
         .then(data =>{
             if(data){
-                citizen = data;
+                return data;
             }
-        });
+        })
+        .catch(error =>{console.log(error);return null;});
     }
+}
+
+const auth = async (token, accessLevel, requestedID) => {
+    citizen = await getDataFromSmartAuth(token);
     if(citizen && citizen.citizen_id==63 && requestedID!=undefined){ // user 63 -> only current admin
         return requestedID // Request from admin -> grant rights
     }
@@ -46,7 +51,12 @@ const auth = async (token, accessLevel, requestedID) => {
     return 0; // deny access
 }
  
+const getID = async (token) => {
+    return (await getDataFromSmartAuth(token)).citizen_id;
+}
+
 module.exports = {
     auth,
     accessLevels,
+    getID
 }
