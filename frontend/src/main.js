@@ -9,12 +9,13 @@ const finanzamtUtils = {
   install(app) {
     app.config.globalProperties.isoDateToString = (isoDate) => {
       return isoDate.substring(0, isoDate.length - 8).replaceAll("-", ".").replace("T", " ");
-    }
+    };
+    app.smartAuthURL = "http://supersmartcity.de:9760";
     app.config.globalProperties.initLogin = () => {
       let page_url = window.location.protocol + '//' + window.location.host;
       let redirect_success = encodeURIComponent(page_url+"/login/"+encodeURIComponent(window.location.href));
       let redirect_error = encodeURIComponent(page_url+"/error")
-      window.location.href = 'http://auth.smartcityproject.net:8080/external?redirect_error='+redirect_error+"&redirect_success="+redirect_success;
+      window.location.href = app.smartAuthURL + '/external?redirect_error='+redirect_error+"&redirect_success="+redirect_success;
     };
     app.config.globalProperties.fetch_get = async (headers, route) => {
       const options = {
@@ -37,7 +38,7 @@ const finanzamtUtils = {
           let page_url = window.location.protocol + '//' + window.location.host;
           let redirect_success = encodeURIComponent(page_url+"/login/"+encodeURIComponent(window.location.href));
           let redirect_error = encodeURIComponent(page_url+"/error")
-          window.location.href = 'http://auth.smartcityproject.net:8080/external?redirect_error='+redirect_error+"&redirect_success="+redirect_success;
+          window.location.href = app.smartAuthURL + '/external?redirect_error='+redirect_error+"&redirect_success="+redirect_success;
         }
         return undefined;
       });
@@ -63,7 +64,7 @@ const finanzamtUtils = {
           let page_url = window.location.protocol + '//' + window.location.host;
           let redirect_success = encodeURIComponent(page_url+"/login/"+encodeURIComponent(window.location.href));
           let redirect_error = encodeURIComponent(page_url+"/error")
-          window.location.href = 'http://auth.smartcityproject.net:8080/external?redirect_error='+redirect_error+"&redirect_success="+redirect_success;
+          window.location.href = app.smartAuthURL + '/external?redirect_error='+redirect_error+"&redirect_success="+redirect_success;
         }
         return undefined;
       });
@@ -91,7 +92,7 @@ const finanzamtUtils = {
           let page_url = window.location.protocol + '//' + window.location.host;
           let redirect_success = encodeURIComponent(page_url+"/login/"+encodeURIComponent(window.location.href));
           let redirect_error = encodeURIComponent(page_url+"/error")
-          window.location.href = 'http://auth.smartcityproject.net:8080/external?redirect_error='+redirect_error+"&redirect_success="+redirect_success;
+          window.location.href = app.smartAuthURL + '/external?redirect_error='+redirect_error+"&redirect_success="+redirect_success;
         }
         return undefined;
       });
@@ -119,7 +120,7 @@ const finanzamtUtils = {
           let page_url = window.location.protocol + '//' + window.location.host;
           let redirect_success = encodeURIComponent(page_url+"/login/"+encodeURIComponent(window.location.href));
           let redirect_error = encodeURIComponent(page_url+"/error")
-          window.location.href = 'http://auth.smartcityproject.net:8080/external?redirect_error='+redirect_error+"&redirect_success="+redirect_success;
+          window.location.href = app.smartAuthURL + '/external?redirect_error='+redirect_error+"&redirect_success="+redirect_success;
         }
         return undefined;
       });
@@ -146,7 +147,7 @@ const finanzamtUtils = {
           let page_url = window.location.protocol + '//' + window.location.host;
           let redirect_success = encodeURIComponent(page_url+"/login/"+encodeURIComponent(window.location.href));
           let redirect_error = encodeURIComponent(page_url+"/error")
-          window.location.href = 'http://auth.smartcityproject.net:8080/external?redirect_error='+redirect_error+"&redirect_success="+redirect_success;
+          window.location.href = app.smartAuthURL + '/external?redirect_error='+redirect_error+"&redirect_success="+redirect_success;
         }
         return undefined;
       });

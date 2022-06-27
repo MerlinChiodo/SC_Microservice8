@@ -7,13 +7,13 @@ const accessLevels = {
     noRights: 0
 };
 Object.freeze(accessLevels);
-
+const smartAuthURL = "http://supersmartcity.de:9760";
 async function getDataFromSmartAuth(token){
     const formBody = [];
     formBody.push(encodeURIComponent("code") + '=' + encodeURIComponent(token));
     citizen = null;
     if(token){
-        return await fetch('http://auth.smartcityproject.net:8080/verify', { 
+        return await fetch(smartAuthURL+'/verify', { 
             method: 'POST', 
             body: formBody.join('&'), 
             headers: { 'Content-Type': "application/x-www-form-urlencoded;charset=UTF-8" } 
