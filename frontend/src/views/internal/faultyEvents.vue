@@ -15,7 +15,7 @@
             <tr v-for="item in events" :key="item.id">
                 <th scope="row">{{item.id}}</th>
                 <td>{{item.eventId}}</td>
-                <td>{{item.content}}</td>
+                <td class="w-50">{{item.content}}</td>
                 <td>{{item.failTime}}</td>
                 <td>
                     <button type="button" @click="deleteEvent(item.id)" class="btn btn-primary">
@@ -61,3 +61,12 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+td {
+  word-break:break-all;
+}
+table {
+    width:80%;
+}
+</style>

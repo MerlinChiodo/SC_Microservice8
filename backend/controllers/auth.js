@@ -8,12 +8,15 @@ const accessLevels = {
 };
 Object.freeze(accessLevels);
 const smartAuthURL = "http://supersmartcity.de:9760";
-async function getDataFromSmartAuth(token){
+async function getDataFromSmartAuth(token, isWorker){
+    if(isWorker){
+        token = token.split('finanzamt-worker-')[1]
+    }
     const formBody = [];
     formBody.push(encodeURIComponent("code") + '=' + encodeURIComponent(token));
     citizen = null;
     if(token){
-        return await fetch(smartAuthURL+'/verify', { 
+        return await fetch(smartAuthURL+(isWorker?"/employee":"")+'/verify', { 
             method: 'POST', 
             body: formBody.join('&'), 
             headers: { 'Content-Type': "application/x-www-form-urlencoded;charset=UTF-8" } 
@@ -35,9 +38,13 @@ async function getDataFromSmartAuth(token){
 }
 
 const auth = async (token, accessLevel, requestedID) => {
-    citizen = await getDataFromSmartAuth(token);
-    if(citizen && citizen.citizen_id==63 && requestedID!=undefined){ // user 63 -> only current admin
+    isAdmin = token.startsWith("finanzamt-worker-");
+    citizen = await getDataFromSmartAuth(token,isAdmin);
+    if(citizen && isAdmin && requestedID!=undefined){ 
         return requestedID // Request from admin -> grant rights
+    }
+    if(citizen && isAdmin && requestedID==undefined){ 
+        return 1 
     }
     if(!accessLevel || accessLevel == accessLevels.noRights){
         return requestedID ? requestedID : citizen ? citizen.citizen_id : 1; // Grant access
@@ -52,7 +59,12 @@ const auth = async (token, accessLevel, requestedID) => {
 }
  
 const getID = async (token) => {
-    return (await getDataFromSmartAuth(token)).citizen_id;
+    isAdmin = token.startsWith("finanzamt-worker-");
+    let data = await getDataFromSmartAuth(token, isAdmin);
+    if(isAdmin){
+        return data.id;
+    }
+    return data.citizen_id;
 }
 
 module.exports = {

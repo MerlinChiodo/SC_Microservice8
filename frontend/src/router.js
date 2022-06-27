@@ -5,6 +5,7 @@ import News from "./views/blog.vue"
 import Forms from "./views/forms.vue"
 import Upload from "./views/upload.vue"
 import Login from "./views/login.vue"
+import AdminLogin from "./views/adminLogin.vue"
 const Contact = () => import("./views/contact.vue")
 const Submit = () => import("./views/account/submit.vue")
 const Operations = () => import("./views/account/processes.vue")
@@ -17,6 +18,7 @@ const Internal_operation = () => import("./views/internal/process.vue")
 const Landingpage_events = () => import("./views/internal/landingpage.vue")
 const Internal_operations = () => import("./views/internal/processes.vue")
 const faulty_events = () => import("./views/internal/faultyEvents.vue")
+const Internal_overview = () => import("./views/internal/overview.vue")
 const routes = [
   {
     path: "/",
@@ -42,6 +44,11 @@ const routes = [
     path: "/Login/:destination",
     name: "Login",
     component: Login,
+  },
+  {
+    path: "/adminLogin/:destination",
+    name: "adminLogin",
+    component: AdminLogin,
   },
   {
     path: "/Kontakt",
@@ -82,6 +89,11 @@ const routes = [
     path: "/Intern/Vorgang",
     name: "Interner Vorgang",
     component: Internal_operation,
+  },
+  {
+    path: "/Intern/overview",
+    name: "Mitarbeiter übersicht",
+    component: Internal_overview,
   },
   {
     path: "/Intern/Events",

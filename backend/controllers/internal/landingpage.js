@@ -8,7 +8,8 @@ const updateService = async (req, res) => {
     if(!errors.isEmpty()){
         return res.status(422).json({ errors: errors.array()[0] });
     }
-    if(auth.auth()){
+    let userID = await auth.auth(req.headers.token, auth.accessLevels.worker)
+    if(userID>0){
         var date = new Date();
         ce_time = date.toISOString();
         jsevent = {
@@ -32,7 +33,8 @@ const deleteService = async (req, res) => {
     if(!errors.isEmpty()){
         return res.status(422).json({ errors: errors.array()[0] });
     }
-    if(auth.auth()){
+    let userID = await auth.auth(req.headers.token, auth.accessLevels.worker)
+    if(userID>0){
         var date = new Date();
         ce_time = date.toISOString();
         jsevent = {
