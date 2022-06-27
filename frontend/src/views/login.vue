@@ -13,7 +13,7 @@ export default {
   methods: {
       process_login(){
         this.$cookies.set("f_token", this.$route.query.token, "1h");
-        window.location.href = this.$route.params.destination;
+        window.location = this.$route.params.destination;
       }
   },
 };
