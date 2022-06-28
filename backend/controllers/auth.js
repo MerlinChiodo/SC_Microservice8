@@ -38,7 +38,10 @@ async function getDataFromSmartAuth(token, isWorker){
 }
 
 const auth = async (token, accessLevel, requestedID) => {
-    isAdmin = token.startsWith("finanzamt-worker-");
+    isAdmin = false;
+    if(token){
+        isAdmin = token.startsWith("finanzamt-worker-");
+    }
     citizen = await getDataFromSmartAuth(token,isAdmin);
     if(citizen && isAdmin && requestedID!=undefined){ 
         return requestedID // Request from admin -> grant rights

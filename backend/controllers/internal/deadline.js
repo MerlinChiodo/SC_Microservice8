@@ -9,7 +9,7 @@ const createDeadline = async (req, res) => {
     if (!errors.isEmpty()) {
         return res.status(422).json({ errors: errors.array()[0] });
     }
-    if (auth.auth()) {
+    if (await auth.auth(req.headers.token, auth.accessLevels.worker)>0) {
         ce_time = req.body.date
         if (!req.body.date) {
             var date = new Date();
@@ -61,7 +61,7 @@ const deleteDeadline = async (req, res) => {
     if (!errors.isEmpty()) {
         return res.status(422).json({ errors: errors.array()[0] });
     }
-    if (auth.auth()) {
+    if (await auth.auth(req.headers.token, auth.accessLevels.worker)>0) {
         try{
             const result = await prismaClient.deadlines.delete({
                 where: {
