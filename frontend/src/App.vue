@@ -38,21 +38,46 @@
                 Aktuelles
               </router-link>
             </li>
-            <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Konto
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li class="nav-item">
-              <router-link to="/Konto/Vorgaenge" class="nav-link">
-                Vorgänge
-              </router-link>
+            <li class="nav-item dropdown" v-if="this.$cookies.isKey('f_token') && !this.$cookies.isKey('fm_token')">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Konto
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li class="nav-item">
+                  <router-link to="/Konto/Vorgaenge" class="nav-link">
+                    Vorgänge
+                  </router-link>
+                </li>
+              </ul>
             </li>
-            </ul>
-          </li>
+            <li class="nav-item dropdown" v-if="this.$cookies.isKey('fm_token')">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Intern
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li class="nav-item">
+                  <router-link to="/Intern/Landingpage" class="nav-link">
+                    Landingpage
+                  </router-link>
+                </li>
+                <li class="nav-item">
+                  <router-link to="/Intern/events" class="nav-link">
+                    Events
+                  </router-link>
+                </li>
+                <li class="nav-item">
+                  <router-link to="/Spenden" class="nav-link">
+                    Spenden
+                  </router-link>
+                </li>
+              </ul>
+            </li>
           </ul>
-          <form class="d-flex">
-            <button class="btn btn-outline-success" type="submit">Login</button>
+          <form class="d-flex" v-if="!this.$cookies.isKey('f_token') && !this.$cookies.isKey('fm_token')">
+            <button class="btn btn-outline-success" type="button" @click="this.login()">Login</button>
+          </form>
+          <form class="d-flex" v-else>
+            <button class="btn btn-outline-danger" type="button" @click="this.logout()">Logout</button>
           </form>
         </div>
       </div>
@@ -130,6 +155,7 @@
           <div class="col-md-3 mb-md-0 mb-3">
             <router-link to="/Kontakt" class="nav-link"> Kontakt </router-link>
             <router-link to="/Upload" class="nav-link"> Dateien einreichen </router-link>
+            <router-link to="/intern/overview" class="nav-link"> Mitarbeiter Login </router-link>
           </div>
         </div>
         <!-- End Footer row 1 -->
@@ -138,7 +164,7 @@
       <!-- Copyright -->
       <div class="footer-copyright text-center py-3">
         © 2022 Copyright:
-        <a href="https://smartcity.com"> smartcity.com</a>
+        <a href="http://supersmartcity.de">supersmartcity.de</a>
       </div>
       <!-- Copyright -->
     </footer>
@@ -148,6 +174,16 @@
 <script>
 export default {
   name: "App",
-  components: {}
+  components: {},
+  methods: {
+      logout(){
+        this.$cookies.remove('f_token');
+        this.$cookies.remove('fm_token');
+        this.$forceUpdate();
+      },
+      login(){
+        this.initLogin();
+      }
+  }
 };
 </script>

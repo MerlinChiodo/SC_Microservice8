@@ -43,39 +43,16 @@ export default {
     },
   },
   mounted: function(){
-      if(this.company){
-        this.loadReceivedDonations();
-      }else{
-        this.loadSentDonations();
-      }
+      this.loadSentDonations();
   },
   methods: {
-      loadSentDonations(){
-        const options = {
-            method: 'GET',
-            headers: {'token':"1234"}
-        };
-        fetch('/api/donations', options)
-        .then((response) => response.json())
-        .then((data) => {
-            console.log(data)
-            this.allDonations = data.donations
-        })
-        .catch(error => {console.log(error)});
-      },
-      loadReceivedDonations(){
-        let companyID = 0 //get from token
-        const options = {
-            method: 'GET',
-            headers: {'token':"1234"}
-        };
-        fetch('/api/donations/'+companyID, options)
-        .then((response) => response.json())
-        .then((data) => {
-            console.log(data)
-            this.allDonations = data.donations
-        })
-        .catch(error => {console.log(error)});
+      async loadSentDonations(){
+        let data = await this.fetch_get({} , '/api/donations' );
+        if(data){
+          this.allDonations = data.donations
+        }else{
+          this.$notify({group: "error",title: "Fehler!",text: "Da ist etwas schiefgelaufen",},2000);
+        }
       }
   },
 };

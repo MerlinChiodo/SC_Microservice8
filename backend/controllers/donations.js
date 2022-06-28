@@ -8,7 +8,7 @@ const createDonation = async (req, res) => {
     if(!errors.isEmpty()){
         return res.status(422).json({ errors: errors.array()[0] });
     }
-    if(auth.auth()){
+    if(true){
         var donationID = null
         try{
             const result = await prismaClient.donation.create({
@@ -43,13 +43,19 @@ const getAllDonations = async (req,res) => {
     if(!errors.isEmpty()){
         return res.status(422).json({ errors: errors.array()[0] });
     }
-    if(auth.auth()){
-        userID = null //TODO: get from token / all if admin
+    if(!req.headers.token.startsWith('finanzamt-worker-')){
+        reqID = await auth.getID(req.headers.token);
+        userID = await auth.auth(req.headers.token, auth.accessLevels.citizen, reqID)
+    }else{
+        reqID = null
+        userID = await auth.auth(req.headers.token, auth.accessLevels.worker)
+    }
+    if(userID>0){
         const donations = await prismaClient.donation.findMany({
             orderBy: [{date: 'desc',}],
             where: {
                 donator: {
-                    equals: userID != null ? userID : undefined
+                    equals: reqID != null ? reqID : undefined
                 }
             }
         })
@@ -68,7 +74,9 @@ const getReceivedDonations = async (req,res) => {
     if(!errors.isEmpty()){
         return res.status(422).json({ errors: errors.array()[0] });
     }
-    if(auth.auth()){
+    
+    userID = await auth.auth(req.headers.token, auth.accessLevels.worker)
+    if(userID>0){
         //TODO: check if user is admin or owner
         const donations = await prismaClient.donation.findMany({
             orderBy: [{date: 'desc',}],

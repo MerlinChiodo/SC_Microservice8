@@ -55,29 +55,26 @@ export default {
     }
   },
   methods:{
-      deleteDeadline(did){
-        const options = {
-            method: 'DELETE',
-            headers: {'token':"1234"}
-        };
-        fetch('/api/deadline/'+did, options)
-        .then((response) => response.json())
-        .then(this.$router.go())
-        .catch(error => {console.log(error)});
+      async deleteDeadline(did){
+        let data = await this.fetch_delete({} , '/api/deadline/'+did );
+        if(data){
+          this.$router.go();
+        }else{
+          this.$notify({group: "error",title: "Fehler!",text: "Da ist etwas schiefgelaufen",},2000);
+        }
       },
-      addDeadline(){
-        const options = {
-            method: 'POST',
-            body: JSON.stringify({
+      async addDeadline(){
+        let body = {
                 date: this.date+':00.000Z',
                 title: this.title,
                 description: this.descr
-            }),
-            headers: { "Content-Type": "application/json", token: "1234" },
-        };
-        fetch('/api/deadline/', options)
-        .then(this.$router.go())
-        .catch(error => {console.log(error)});
+            };
+        let data = await this.fetch_post({} , body, "/api/deadline/" );
+        if(data){
+          this.$router.go();
+        }else{
+          this.$notify({group: "error",title: "Fehler!",text: "Da ist etwas schiefgelaufen",},2000);
+        }
       }
   }
 };

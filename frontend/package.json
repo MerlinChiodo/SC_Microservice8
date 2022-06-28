@@ -13,6 +13,7 @@
     "jspdf": "^2.5.1",
     "qrcode": "^1.5.0",
     "vue": "^3.0.0",
+    "vue-cookies": "^1.8.1",
     "vue-router": "^4.0.14",
     "vue3-vt-notifications": "^1.0.1"
   },

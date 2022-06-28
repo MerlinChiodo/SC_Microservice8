@@ -38,46 +38,27 @@ export default {
     };
   },
   methods: {
-    updateService() {
+    async updateService() {
       const body = {
         "surl": this.surl,
         "aboutus": this.about_us,
         "pictureurl": this.picture
       };
-      const options = {
-        method: "PUT",
-        headers: { "Content-Type": "application/json", token: "1234" },
-        body: JSON.stringify(body)
-      };
-      fetch("/api/landingpage/", options)
-        .then((response) => {
-          if (response.status == 200) {
-            this.$notify({group: "success",title: "Erfolg!",text: "Event erfolgreich gesendet",},2000);
-          } else {
-            throw new Error("Something went wrong");
-          }
-        })
-        .catch((error) => {
-          this.$notify({group: "error",title: "Fehler!",text: "Da ist etwas schiefgelaufen",error: error,},2000);
-        });
+      let data = await this.fetch_put({} ,body, "/api/landingpage/" );
+      if(data){
+        this.$notify({group: "success",title: "Erfolg!",text: "Event erfolgreich gesendet",},2000);
+      }else{
+        this.$notify({group: "error",title: "Fehler!",text: "Da ist etwas schiefgelaufen",},2000);
+      }
     },
-    deleteService() {
-      const options = {
-        method: "DELETE",
-        headers: { token: "1234" },
-      };
+    async deleteService() {
       this.state = "waiting";
-      fetch("/api/landingpage/", options)
-        .then((response) => {
-          if (response.status == 200) {
-            this.$notify({group: "success",title: "Erfolg!",text: "Event erfolgreich gesendet",},2000);
-          } else {
-            throw new Error("Something went wrong");
-          }
-        })
-        .catch((error) => {
-          this.$notify({group: "error",title: "Fehler!",text: "Da ist etwas schiefgelaufen",error: error,},2000);
-        });
+      let data = await this.fetch_delete({}, "/api/landingpage/" );
+      if(data){
+        this.$notify({group: "success",title: "Erfolg!",text: "Event erfolgreich gesendet",},2000);
+      }else{
+        this.$notify({group: "error",title: "Fehler!",text: "Da ist etwas schiefgelaufen",},2000);
+      }
     },
   },
 };

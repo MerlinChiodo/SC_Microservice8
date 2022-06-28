@@ -47,39 +47,24 @@ export default {
     this.loadNotes();
   },
   methods: {
-    loadNotes() {
-      const options = {
-        method: "GET",
-        headers: { token: "1234" },
-      };
-      fetch("/api/notes/" + this.process, options)
-        .then((response) => response.json())
-        .then((data) => {
-          this.allNotes = data.result;
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+    async loadNotes() {
+      let data = await this.fetch_get({} , "/api/notes/" + this.process );
+      if(data){
+        this.allNotes = data.result;
+      }
     },
-    sendNote() {
+    async sendNote() {
       if (this.neue_nachricht.length > 0) {
-        const options = {
-          method: "POST",
-          body: JSON.stringify({
+        let body = {
             process: this.process,
             text: this.neue_nachricht,
-          }),
-          headers: {
-            "Content-Type": "application/json",
-            token: "12134",
-          },
-        };
-        fetch("/api/notes", options)
-          .then((response) => response.json())
-          .then(this.loadNotes())
-          .catch((error) => {
-            console.log(error);
-          });
+          };
+        let data = await this.fetch_post({} ,body, "/api/notes/" );
+        if(data){
+          this.loadNotes()
+        }else{
+          this.$notify({group: "error",title: "Fehler!",text: "Da ist etwas schiefgelaufen",},2000);
+        }
       }
     },
   },

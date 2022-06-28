@@ -15,7 +15,7 @@
             <tr v-for="item in events" :key="item.id">
                 <th scope="row">{{item.id}}</th>
                 <td>{{item.eventId}}</td>
-                <td>{{item.content}}</td>
+                <td class="w-50">{{item.content}}</td>
                 <td>{{item.failTime}}</td>
                 <td>
                     <button type="button" @click="deleteEvent(item.id)" class="btn btn-primary">
@@ -41,28 +41,32 @@ export default {
       this.loadEvents();
   },
   methods: {
-      loadEvents(){
-        const options = {
-            method: 'GET',
-            headers: {'token':"1234"}
-        };
-        fetch('/api/faultyEvents', options)
-        .then((response) => response.json())
-        .then((data) => {
-            this.events = data.events
-        })
-        .catch(error => {console.log(error)});
+      async loadEvents(){
+        let data = await this.fetch_get({} , "/api/faultyEvents/" );
+        if(data){
+          this.events = data.events
+        }else{
+          console.log(data);
+          this.$notify({group: "error",title: "Fehler!",text: "Keine Events gefunden",},2000);
+        }
       },
-      deleteEvent(id){
-        const options = {
-            method: 'delete',
-            headers: {'token':"1234"}
-        };
-        fetch('/api/faultyEvents/'+id, options)
-        .then((response) => response.json())
-        .then(this.loadEvents)
-        .catch(error => {console.log(error)});
+      async deleteEvent(id){
+        let data = await this.fetch_delete({}, "/api/faultyEvents/" + id );
+        if(data){
+          this.loadEvents();
+        }else{
+          this.$notify({group: "error",title: "Fehler!",text: "Da ist etwas schiefgelaufen",},2000);
+        } 
       }
   },
 };
 </script>
+
+<style scoped>
+td {
+  word-break:break-all;
+}
+table {
+    width:80%;
+}
+</style>

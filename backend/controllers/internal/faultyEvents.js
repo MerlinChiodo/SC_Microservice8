@@ -8,7 +8,8 @@ const getFaultyEvents = async (req,res) => {
     if(!errors.isEmpty()){
         return res.status(422).json({ errors: errors.array()[0] });
     }
-    if(auth.auth()){
+    let userID = await auth.auth(req.headers.token, auth.accessLevels.worker)
+    if(userID>0){
         const events = await prismaClient.faultyEvents.findMany({})
         if(events.length == 0){
             return res.status(404).json({ message: "Could not find any events", events:[] });
@@ -26,7 +27,8 @@ const deleteFaultyEvent = async (req,res) => {
     if(!errors.isEmpty()){
         return res.status(422).json({ errors: errors.array()[0] });
     }
-    if(auth.auth()){
+    let userID = await auth.auth(req.headers.token, auth.accessLevels.worker)
+    if(userID>0){
         try {
             const result = await prismaClient.faultyEvents.delete({
                 where: {

@@ -1,5 +1,5 @@
 const express = require('express');
-const { header, body, param } = require('express-validator');
+const { header, body, param, query } = require('express-validator');
 const { createProcess, getProcess, getAllProcesses, deleteProcess, editProcess } = require("../../controllers/process/process.js");
 const router = express.Router()
 
@@ -22,6 +22,7 @@ router.put('/',
     editProcess)
 
 router.get('/all',
+    query('user').optional().isNumeric(),
     header('token').not().isEmpty().trim().escape(),
     getAllProcesses)
 

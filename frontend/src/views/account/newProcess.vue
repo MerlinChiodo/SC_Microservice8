@@ -73,46 +73,26 @@ export default {
   },
   methods: {
     async getProcessTypes() {
-      const options = {
-        method: "GET"
-      };
-      await fetch("/api/processTypes/" , options)
-        .then((response) => response.json())
-        .then((data) => {
-          if (data.result) {
-            this.processTypes = data.result;
-          } else {
-            throw new Error(data.error);
-          }
-        }).catch((error) => {
-          this.$notify({group: "error",title: "Fehler!",text: "Da ist etwas schiefgelaufen",error:error},2000);
+      let data = await this.fetch_get({} , "/api/processTypes/" );
+      if(data.result){
+        this.processTypes = data.result;
+      }else{
+        this.$notify({group: "error",title: "Fehler!",text: "Da ist etwas schiefgelaufen"},2000);
           this.$router.push("/");
-        });
+      }
     },
     async createProcess(){
-        const options = {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "token": "1234"
-            },
-            body: JSON.stringify({
+      let body = {
                 dateOffset: this.year,
                 type: this.processType
-            })
-        };
-        await fetch("/api/process/", options)
-            .then((response) => {
-            if (response.status == 201) {
-                this.$notify({group: "success",title: "Erfolg!",text: "Vorgang erfolgreich erstellt",},2000);
-                this.state = 3;
-            } else {
-                throw new Error("Something went wrong");
-            }
-            })
-            .catch((error) => {
-                this.$notify({group: "error",title: "Fehler!",text: "Da ist etwas schiefgelaufen",error: error,},2000);
-            });
+            };
+      let data = await this.fetch_post({} ,body, "/api/process/" );
+      if(data){
+        this.$notify({group: "success",title: "Erfolg!",text: "Vorgang erfolgreich erstellt",},2000);
+        this.state = 3;
+      }else{
+        this.$notify({group: "error",title: "Fehler!",text: "Da ist etwas schiefgelaufen",},2000);
+      }
     }
   },
 };
