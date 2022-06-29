@@ -2,13 +2,14 @@ const {validationResult} = require('express-validator');
 const prismaClient = require('../prismaClient');
 const Prisma = require('@prisma/client')
 const auth = require('./auth');
+let secret = process.env.backendSecret;
 
 const createDonation = async (req, res) => {
     const errors = validationResult(req);
     if(!errors.isEmpty()){
         return res.status(422).json({ errors: errors.array()[0] });
     }
-    if(true){
+    if(req.headers.token == secret || await auth.auth(req.headers.token,auth.accessLevels.worker)>0){
         var donationID = null
         try{
             const result = await prismaClient.donation.create({
@@ -57,6 +58,9 @@ const getAllDonations = async (req,res) => {
                 donator: {
                     equals: reqID != null ? reqID : undefined
                 }
+            },
+            include: {
+                companies: true
             }
         })
         if(donations.length == 0){
@@ -84,6 +88,9 @@ const getReceivedDonations = async (req,res) => {
                 recipiant: {
                     equals: parseInt(req.params['recipiant'])
                 }
+            },
+            include: {
+                companies: true
             }
         })
         if(donations.length == 0){
@@ -101,7 +108,7 @@ const deleteDonation = async (req, res) => {
     if(!errors.isEmpty()){
         return res.status(422).json({ errors: errors.array() });
     }
-    if(auth.auth()){
+    if(await auth.auth(req.headers.token,auth.accessLevels.worker)>0){
         //TODO: only admins can do this
         try{
             const result = await prismaClient.donation.delete({

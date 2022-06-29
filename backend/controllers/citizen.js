@@ -1,13 +1,14 @@
 const {validationResult} = require('express-validator');
 const prismaClient = require('../prismaClient');
 const auth = require('./auth');
+let secret = process.env.backendSecret;
 
 const createCitizen = async (req, res) => {
     const errors = validationResult(req);
     if(!errors.isEmpty()){
         return res.status(422).json({ errors: errors.array()[0] });
     }
-    if(true){
+    if(req.headers.token == secret || await auth.auth(req.headers.token,auth.accessLevels.worker)>0){
         try{
             const citizen = await prismaClient.citizens.create({
                 data: {
@@ -36,7 +37,7 @@ const getCitizen = async (req,res) => {
     if(!errors.isEmpty()){
         return res.status(422).json({ errors: errors.array()[0] });
     }
-    if(true){
+    if(req.headers.token == secret || await auth.auth(req.headers.token,auth.accessLevels.worker)>0){
         prismaClient.citizens.findUnique({
             where: {
                 id: parseInt(req.params['id'])
@@ -60,9 +61,17 @@ const getAllCitizens = async (req,res) => {
     if(!errors.isEmpty()){
         return res.status(422).json({ errors: errors.array()[0] });
     }
-    if(true){
+    if(req.headers.token == secret || await auth.auth(req.headers.token,auth.accessLevels.worker)>0){
         prismaClient.citizens.findMany({
             orderBy: [{id: 'asc',}],
+            include: {
+                process: {
+                    include: {
+                        statusUpdates: true,
+                        processTypes: true
+                    }
+                }
+            }
         }).then(citizens => {
             if(citizens.length == 0){
                 throw new Error("No citizens found");
@@ -82,7 +91,7 @@ const deleteCitizen = async (req, res) => {
     if(!errors.isEmpty()){
         return res.status(422).json({ errors: errors.array()[0] });
     }
-    if(true){
+    if(req.headers.token == secret || await auth.auth(req.headers.token,auth.accessLevels.worker)>0){
         citizen = await prismaClient.citizens.delete({
             where: {
                 id: parseInt(req.params['id'])
@@ -106,7 +115,7 @@ const editCitizen = async (req, res) => {
     if(!errors.isEmpty()){
         return res.status(422).json({ errors: errors.array()[0] });
     }
-    if(true){
+    if(req.headers.token == secret || await auth.auth(req.headers.token,auth.accessLevels.worker)>0){
         prismaClient.citizens.update({
             where: {
                 id: parseInt(req.body.id)
