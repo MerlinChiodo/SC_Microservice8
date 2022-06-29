@@ -16,7 +16,7 @@
         <tbody>
             <tr v-for="item in allDonations" :key="item.id">
                 <td>{{item.amount}}</td>
-                <td>{{item.recipiant}}</td>
+                <td>{{item.companies.name}}</td>
                 <td>{{item.donator}}</td>
                 <td>{{item.reason}}</td>
                 <td>{{item.purpose}}</td>
