@@ -12,7 +12,7 @@
         />
       </div>
       <div class="col-8 pt-5">
-        {{ item.description }}<br />
+        {{ item.descr }}<br />
         {{ isoDateToString(item.adddate) }}<br />
         <button v-if="admin" class="btn btn-danger" type="button" @click="deleteEntry(item.id)">Löschen</button>
       </div>
