@@ -17,15 +17,6 @@ const finanzamtUtils = {
         }
         return app.$cookies.get("f_token");
     };
-    app.loginPrompt = (error) => {
-      if(error.message == "Auth. required"){
-        let page_url = window.location.protocol + '//' + window.location.host;
-        let redirect_success = encodeURIComponent(page_url+"/login/"+encodeURIComponent(window.location.href.replace(/(^\w+:|^)\/\//, '').replace(window.location.host,'')));
-        let redirect_error = encodeURIComponent(page_url+"/error")
-        window.location.href = app.smartAuthURL + '/external?redirect_error='+redirect_error+"&redirect_success="+redirect_success;
-      }
-      return undefined;
-  };
     app.config.globalProperties.initLogin = () => {
       let page_url = window.location.protocol + '//' + window.location.host;
       let redirect_success = encodeURIComponent(page_url+"/login/"+encodeURIComponent(window.location.href.replace(/(^\w+:|^)\/\//, '').replace(window.location.host,'')));
@@ -38,6 +29,16 @@ const finanzamtUtils = {
       let redirect_error = encodeURIComponent(page_url+"/error")
       window.location.href = app.smartAuthURL + '/employee/external?redirect_error='+redirect_error+"&redirect_success="+redirect_success;
     };
+    app.loginPrompt = (error) => {
+      if(error.message == "Auth. required"){
+        if(app.$cookies.isKey('fm_token')){
+          app.config.globalProperties.workerLogin();
+        }else{
+          app.config.globalProperties.initLogin();
+        }
+      }
+      return undefined;
+  };
     app.config.globalProperties.fetch_get = async (headers, route) => {
       const options = {
         method: 'GET',
@@ -52,7 +53,7 @@ const finanzamtUtils = {
         return response.json()
       })
       .then((data) => {
-          return data;
+        return data;
       })
       .catch(error => {
         return app.loginPrompt(error);
