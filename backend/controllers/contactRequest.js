@@ -25,8 +25,8 @@ const getAllContactRequests = async (req,res) => {
     if(!errors.isEmpty()){
         return res.status(422).json({ errors: errors.array()[0] });
     }
-    userID = await auth(req.headers.token, accessLevels.admin);
-    if(userID >= 0){
+    userID = await auth(req.headers.token, accessLevels.worker);
+    if(userID > 0){
         const contactRequests = await prismaClient.contactrequest.findMany();
         if (contactRequests.length == 0) {
             return res.status(404).json({ message: "No contact requests were found", result: [] });
@@ -44,8 +44,8 @@ const deleteContactRequest = async (req, res) => {
     if(!errors.isEmpty()){
         return res.status(422).json({ errors: errors.array()[0] });
     }
-    userID = await auth(req.headers.token, accessLevels.admin);
-    if(userID >= 0){
+    userID = await auth(req.headers.token, accessLevels.worker);
+    if(userID > 0){
         const contactRequest = await prismaClient.contactrequest.delete({
             where: {
                 id: parseInt(req.params['contactRequestID'])

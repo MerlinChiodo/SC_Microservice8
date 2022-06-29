@@ -2,13 +2,7 @@
   <div class="container">
     <h2>Formulare</h2>
     <br />
-    <FormCard
-      :description="description"
-      :title="title"
-      :target="target"
-      :path="path"
-      :date="date"
-    />
+    <FormCard :forms="forms" :admin="this.$cookies.isKey('fm_token')"/>
     <br />
   </div>
 </template>
@@ -19,17 +13,26 @@ export default {
   name: "Blog",
   data() {
     return {
-      description:
-        "Lorem ipsum dolor, sit amet consectetur adipisicing elit. At vitae laboriosam dolore debitis blanditiis delectus accusantium dicta, impedit sit asperiores quas veritatis fugit ea illum sed, alias reprehenderit itaque.",
-      title: "Formular 1",
-      target: "Rentner",
-      path: "http://vps2290194.fastwebserver.de:9780/api/files/48a7f33f-cd3a-4e38-addc-2df4a095aaad.pdf",
-      date: "2021-01-01 10:00",
+      forms: []
     };
   },
   components: {
     FormCard,
   },
-  methods: {},
+  mounted: function(){
+      this.getForms();
+      console.log(this.forms);
+  },
+  methods: {
+    async getForms(){
+      let data = await this.fetch_get({} , '/api/forms/all' );
+      if(data){
+        console.log(data.result)
+        this.forms = data.result
+      }else{
+        this.$notify({group: "error",title: "Fehler!",text: "Da ist etwas schiefgelaufen",},2000);
+      }
+    }
+  },
 };
 </script>

@@ -155,7 +155,7 @@
           <div class="col-md-3 mb-md-0 mb-3">
             <router-link to="/Kontakt" class="nav-link"> Kontakt </router-link>
             <router-link to="/Upload" class="nav-link"> Dateien einreichen </router-link>
-            <router-link to="/intern/overview" class="nav-link"> Mitarbeiter Login </router-link>
+            <router-link to="/intern/overview" class="nav-link"> Mitarbeiterbereich </router-link>
           </div>
         </div>
         <!-- End Footer row 1 -->

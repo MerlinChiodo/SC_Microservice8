@@ -2,7 +2,7 @@
   <div class="container">
     <h2>Fristen</h2>
     <br />
-    <DeadlineCard :deadlines="deadlines" :admin="true" v-if="deadlines"/>
+    <DeadlineCard :deadlines="deadlines" :admin="this.$cookies.isKey('fm_token')" v-if="deadlines"/>
     <br />
   </div>
 </template>

@@ -21,12 +21,12 @@ model appointments {
 }
 
 model blogEntry {
-  id        Int      @id
+  id        Int      @id @default(autoincrement())
   adddate   DateTime @default(now()) @db.Timestamp(0)
-  type      Int?
   target    String?  @db.VarChar(255)
   descr     String   @db.Text
   imagePath String?  @db.VarChar(255)
+  title     String   @db.VarChar(30)
 }
 
 model citizens {
@@ -99,12 +99,12 @@ model file {
 }
 
 model forms {
-  id      Int       @id
+  id      Int       @id @default(autoincrement())
   path    String?   @db.VarChar(255)
   adddate DateTime? @default(now()) @db.Timestamp(0)
-  type    Int?
   target  String?   @db.VarChar(255)
   descr   String    @db.VarChar(255)
+  title   String    @db.VarChar(30)
 }
 
 model income {

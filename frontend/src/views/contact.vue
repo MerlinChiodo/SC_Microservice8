@@ -68,6 +68,7 @@
             <div class="mb-3">
               <label for="TextInput" class="form-label">Name:</label>
               <input
+                v-model="crname"
                 type="text"
                 id="TextInput"
                 class="form-control"
@@ -77,6 +78,7 @@
             <div class="mb-3">
               <label for="exampleFormControlInput1">Email Addresse:</label>
               <input
+                v-model="cremail"
                 type="email"
                 class="form-control"
                 id="exampleFormControlInput1"
@@ -86,6 +88,7 @@
             <div class="mb-3">
               <label for="exampleFormControlTextarea1">Nachricht:</label>
               <textarea
+                v-model="crmessage"
                 class="form-control"
                 id="exampleFormControlTextarea1"
                 rows="3"
@@ -94,6 +97,7 @@
             <div class="mb-3">
               <div class="form-check">
                 <input
+                  v-model="crconsent"
                   class="form-check-input"
                   type="checkbox"
                   id="disabledFieldsetCheck"
@@ -104,6 +108,7 @@
               </div>
             </div>
             <button
+              v-if="crconsent"
               type="button"
               @click="submitMessage()"
               class="btn btn-primary"
@@ -124,6 +129,10 @@ export default {
     return {
       error: null,
       message: null,
+      crmessage: "Nachricht",
+      crname: "Name",
+      cremail: "email",
+      crconsent: false
     };
   },
   created() {
@@ -134,8 +143,20 @@ export default {
     requestAppointment() {
       this.error = "Sorry, geht noch nicht :(";
     },
-    submitMessage() {
-      this.error = "Sorry, geht noch nicht :(";
+    async submitMessage() {
+      let body = {
+                name: this.crname,
+                email: this.cremail,
+                message: this.crmessage
+            };
+      let data = await this.fetch_post({} , body, '/api/contactRequest/');
+      if(data && !data.errors){
+        this.message = "Anfrage erfolgreich gesendet";
+        this.error = null;
+      }else{
+        this.message = null;
+        this.error = "Da ist etwas schiefgelaufen";
+      }
     },
   },
 };
