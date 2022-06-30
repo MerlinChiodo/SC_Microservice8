@@ -23,7 +23,7 @@
       </div>
       <div class="carousel-inner">
         <div class="carousel-item active">
-          <img src="../assets/carousel.png" class="d-block w-100" alt="..." />
+          <img src="http://vps2290194.fastwebserver.de:9780/api/files/ba7ed1f8-9a90-44c5-bd4c-2ac26030ad37.jpg?token=1234" class="d-block w-100" alt="office" />
           <div class="header-text hidden-xs">
             <div class="col-md-12 cccontent ccleft d-none d-lg-block">
               <h2>
@@ -31,24 +31,23 @@
               </h2>
               <br />
               <h3>
-                <span
-                  >Lorem ipsum dolor sit amet, consectetur adipiscing
-                  elit.</span
-                >
+                <span>
+                  Sehen Sie sich alle laufenden Vorgänge an, ganz ohne Papier!
+                </span>
               </h3>
               <br />
               <a
-                href="#"
+                href="Konto/Vorgaenge"
                 class="btn btn-secondary btn-lg active"
                 role="button"
                 aria-pressed="true"
-                >Starten</a
+                >Meine Vorgänge</a
               >
             </div>
           </div>
         </div>
         <div class="carousel-item">
-          <img src="../assets/carousel.png" class="d-block w-100" alt="..." />
+          <img src="http://supersmartcity.de:9780/api/files/f38de1b5-e8d0-4b86-9099-4a62e826016f.jpg?token=1234" class="d-block w-100" alt="gebäude finanzamt münster" />
           <div class="col-md-12 cccontent ccright d-none d-lg-block">
             <h2>
               <span>Finanzamt 2.0</span>
@@ -56,16 +55,16 @@
             <br />
             <h3>
               <span
-                >Lorem ipsum dolor sit amet, consectetur adipiscing elit.</span
+                >Sehen Sie sich anstehende Termine und Fristen an</span
               >
             </h3>
             <br />
             <a
-              href="#"
+              href="Termine"
               class="btn btn-secondary btn-lg active"
               role="button"
               aria-pressed="true"
-              >Starten</a
+              >Zu den Terminen</a
             >
           </div>
         </div>
@@ -73,22 +72,13 @@
     </div>
 
     <div class="jumbotron text-center">
-      <h1 class="display-4">Willkommen beim Finanzamt 2.0</h1>
+      <h1 class="display-4">Willkommen bei ihrem Finanzamt</h1>
       <p class="lead">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis
-        aliquam ipsam, hic reiciendis minima ut.
-      </p>
-      <hr class="my-4" />
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ea tempore
-        architecto optio, veritatis cupiditate, praesentium explicabo maiores
-        totam vel, dicta quam nihil nostrum illum aliquam suscipit reprehenderit
-        neque placeat incidunt doloribus non rem possimus odit. Culpa ipsa
-        aspernatur itaque at consequatur, fugit dolor optio corrupti eos vero
-        cupiditate repudiandae quibusdam
-      </p>
-      <p class="lead">
-        <a class="btn btn-primary btn-lg" href="#" role="button">Mehr lernen</a>
+        Ihr Finanzamt ist jetzt komplett digital zu erreichen.
+        <br>
+        Starten Sie neue Vorgänge, reichen Dateien ein und warten auf Bearbeitung durch unsere Sachbearbeiter.
+        <br>
+        Wir sind für Sie da, ob digital oder vor Ort.
       </p>
     </div>
 
@@ -114,13 +104,13 @@
         >
           <div class="accordion-body">
             <p>
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nulla
-              voluptates temporibus provident fugit sed fuga accusamus voluptas
-              doloremque architecto sapiente. Qui, odit. Accusantium et non
-              exercitationem saepe reprehenderit eius, velit soluta atque
-              tempore amet quod unde quibusdam quos maiores placeat deleniti!
-              Reiciendis repellat perspiciatis non error libero necessitatibus
-              nulla vero!
+              Sie haben noch keine Login-Daten für die Smart City Münster?
+              <br>
+              Kein Problem!
+              <br>
+              Sie können problemlos über das Formular "Dateien Einreichen" angefragte Informationen nachreichen
+              <br>
+              Ansonsten erreichen Sie ihr Bürgerbüro <a href="http://www.supersmartcity.de:9710/">hier</a>
             </p>
           </div>
         </div>
@@ -146,45 +136,7 @@
         >
           <div class="accordion-body">
             <p>
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nulla
-              voluptates temporibus provident fugit sed fuga accusamus voluptas
-              doloremque architecto sapiente. Qui, odit. Accusantium et non
-              exercitationem saepe reprehenderit eius, velit soluta atque
-              tempore amet quod unde quibusdam quos maiores placeat deleniti!
-              Reiciendis repellat perspiciatis non error libero necessitatibus
-              nulla vero!
-            </p>
-          </div>
-        </div>
-      </div>
-      <div class="accordion-item">
-        <h2 class="accordion-header" id="headingThree">
-          <button
-            class="accordion-button collapsed"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#collapseThree"
-            aria-expanded="false"
-            aria-controls="collapseThree"
-          >
-            Vorgänge verwalten
-          </button>
-        </h2>
-        <div
-          id="collapseThree"
-          class="accordion-collapse collapse"
-          aria-labelledby="headingThree"
-          data-bs-parent="#accordionExample"
-        >
-          <div class="accordion-body">
-            <p>
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nulla
-              voluptates temporibus provident fugit sed fuga accusamus voluptas
-              doloremque architecto sapiente. Qui, odit. Accusantium et non
-              exercitationem saepe reprehenderit eius, velit soluta atque
-              tempore amet quod unde quibusdam quos maiores placeat deleniti!
-              Reiciendis repellat perspiciatis non error libero necessitatibus
-              nulla vero!
+              Sollten Sie trotz der intuitiven Benutzeroberfläche und den bereitgestellten Informationen noch Fragen haben, erreichen Sie uns <a href="Kontakt">hier</a>
             </p>
           </div>
         </div>

@@ -32,9 +32,9 @@ export default {
   name: "Vorgänge",
   data() {
     return {
-      surl: "vps2290194.fastwebserver.de:9780",
+      surl: "http://supersmartcity.de:9780",
       about_us: "Finanzen oder so", 
-      picture: "http://vps2290194.fastwebserver.de:9780/api/files/f394172b-747c-412a-bfc9-872701fc2d98.png?token=1234"
+      picture: "http://supersmartcity.de:9780/api/files/f38de1b5-e8d0-4b86-9099-4a62e826016f.jpg?token=1234"
     };
   },
   methods: {
