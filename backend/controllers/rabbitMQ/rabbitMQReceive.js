@@ -5,6 +5,7 @@ const DonationRabbitMQSchema = require('./events/donationEvent.js');
 const { CitizenNewSchema, CitizenChangeSchema, CitizenDeathSchema, CitizenDivorceSchema, citizenMarriageSchema, CitizenMarriageSchema } = require('./events/citizenEvent.js');
 const prismaClient = require('../../prismaClient');
 const fetch = require('node-fetch');
+let secret = process.env.backendSecret;
 
 async function storeFaultyEvent(id, content) {
     return await prismaClient.faultyEvents.create({
@@ -16,7 +17,7 @@ async function storeFaultyEvent(id, content) {
 }
 
 async function getAllCitizenDetails(citizenId) {
-    return fetch('http://vps2290194.fastwebserver.de:9710/api/citizen/' + citizenId, { method: 'GET', headers: { 'token': "1234" } })
+    return fetch('http://vps2290194.fastwebserver.de:9710/api/citizen/' + citizenId, { method: 'GET', headers: { 'token': secret } })
         .then(response => response.json())
         .then(data => {
             return data;
@@ -47,7 +48,7 @@ function validator(event, schema, callback) {
 
 async function processNewCitizen(event) {
     citizen = await getCitizenDetails(event.citizen_id);
-    await fetch('http://localhost:3000/api/citizen', { method: 'POST', body: JSON.stringify(citizen), headers: { 'token': "1234", 'Content-Type': "application/json" } })
+    await fetch('http://localhost:3000/api/citizen', { method: 'POST', body: JSON.stringify(citizen), headers: { 'token': secret, 'Content-Type': "application/json" } })
         .then(response => {
             if (response.status === 201) {
                 console.log("Citizen was created")
@@ -68,7 +69,7 @@ async function updateCitizen(event) {
     if (citizen) {
         // update citizen
         citizend = await getCitizenDetails(event.citizen_id);
-        await fetch('http://localhost:3000/api/citizen', { method: 'put', body: JSON.stringify(citizend), headers: { 'token': "1234", 'Content-Type': "application/json" } })
+        await fetch('http://localhost:3000/api/citizen', { method: 'put', body: JSON.stringify(citizend), headers: { 'token': secret, 'Content-Type': "application/json" } })
             .then(response => {
                 if (response.status === 200) {
                     console.log("Citizen was updated")
@@ -131,7 +132,7 @@ async function citizenDivorce(event) {
 }
 
 async function citizenDeath(event) {
-    await fetch('http://localhost:3000/api/citizen/' + event.citizen_id, { method: 'delete', headers: { 'token': "1234" } })
+    await fetch('http://localhost:3000/api/citizen/' + event.citizen_id, { method: 'delete', headers: { 'token': secret } })
         .then(response => {
             if (response.status === 200) {
                 console.log("Citizen was removed")
@@ -148,7 +149,7 @@ async function processDonation(event) {
         donator: event.citizen_id,
         recipiant: 0
     };
-    await fetch('http://localhost:3000/api/donations', { method: 'post', body: JSON.stringify(body), headers: { 'token': "1234", 'Content-Type': "application/json" } })
+    await fetch('http://localhost:3000/api/donations', { method: 'post', body: JSON.stringify(body), headers: { 'token': secret, 'Content-Type': "application/json" } })
         .then(response => {
             if (response.status === 201) {
                 console.log("Donation was created")

@@ -13,7 +13,7 @@ const uploadFile = async (req, res) => {
     }
     if(req.file !== undefined){
         filename = null
-        if(auth.auth(req.headers.token, auth.accessLevels.noRights)){
+        if(await auth.auth(req.headers.token, auth.accessLevels.noRights)){
             try {
                 const result = await prismaClient.file.create({
                     data: {
@@ -55,7 +55,7 @@ const getFile = async (req, res) => {
     if(token == null || token.length == 0){
         return res.status(422).json({message: "Invalid token" })
     }
-    if(auth.auth(req.headers.token, auth.accessLevels.noRights)){
+    if(await auth.auth(req.headers.token, auth.accessLevels.noRights)){
         try {
             if (fs.existsSync(filepath)) {
                 res.sendFile(filename, { root:"uploads" });
@@ -117,7 +117,7 @@ const deleteFile = async (req, res) => {
     }
     filename = req.params['fileUUID']
     filepath = "uploads/"+filename
-    if(auth.auth(req.headers.token, auth.accessLevels.worker)){
+    if(await auth.auth(req.headers.token, auth.accessLevels.worker)){
         try {
             if (fs.existsSync(filepath)) {
                 //file exists
@@ -163,7 +163,7 @@ const getEveryFile = async (req,res) => {
         return res.status(422).json({ errors: errors.array()[0] });
     }
     // TODO: Check if user has admin rights
-    if(auth.auth(req.headers.token, auth.accessLevels.admin)){
+    if(await auth.auth(req.headers.token, auth.accessLevels.admin)){
         localfiles = []
         onlyDBfiles = []
         validFiles = []

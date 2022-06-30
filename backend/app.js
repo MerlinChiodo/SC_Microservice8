@@ -16,7 +16,6 @@ app.use(cors())
  * Imports
  */
 const contactRequest = require('./routes/contactRequest.js')
-const operations = require('./routes/operations.js')
 const files = require('./routes/files.js')
 const appointments = require('./routes/appointments.js')
 const donations = require('./routes/donations.js')
@@ -40,7 +39,6 @@ const processTypes = require('./routes/internal/processTypes.js');
  */
 // API routes
 app.use('/api/contactRequest', contactRequest)
-app.use('/api/operations', operations)
 app.use('/api/files', files)
 app.use('/api/appointments', appointments)
 app.use('/api/donations', donations)

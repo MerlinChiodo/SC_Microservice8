@@ -16,7 +16,7 @@ const createStatusUpdate = async (req, res) => {
             worker: true
         },
     });
-    if(auth.auth(req.headers.token, auth.accessLevels.worker, result.citizens.id)){
+    if(await auth.auth(req.headers.token, auth.accessLevels.worker, result.citizens.id)){
         try{
             const result = await prismaClient.statusUpdates.create({
                 data: {
@@ -40,7 +40,7 @@ const getStatusUpdate = async (req,res) => {
     if(!errors.isEmpty()){
         return res.status(422).json({ errors: errors.array()[0] });
     }
-    if(auth.auth(req.headers.token, auth.accessLevels.noRights, 0)){
+    if(await auth.auth(req.headers.token, auth.accessLevels.noRights, 0)){
         try{
             const result = await prismaClient.statusUpdates.findMany({
                 where: {

@@ -1,7 +1,15 @@
 <template>
   <div class="wrapper" v-if="filterByYear(year).length>0">
     <h5 v-if="!sign">Steuerjahr {{year}}</h5>
-    <h5 v-else>Laufende Prozesse: Sachbearbeiter {{sign}}</h5>
+    <div v-else>
+      <h5>Sachbearbeiter {{sign}}</h5>
+      <div id="customerDetails">
+        <h6 style="display: inline">Name: </h6> {{ processes[0].citizens.lastname }}, {{ processes[0].citizens.name }}
+        <br>
+        <h6 style="display: inline">E-Mail: </h6>{{ processes[0].citizens.email }} <h6 style="display: inline">Geburtstag: </h6> {{ isoDateToString(processes[0].citizens.birthday).split(" ")[0] }}
+      </div>
+    </div>
+    <br>
     <div v-for="process in sign?processes:filterByYear(year)" :key="process.id" class="card mt-10 mb-10">
       <div class="row" v-if="process">
         <div class="col-sm">
@@ -9,10 +17,6 @@
         </div>
         <div class="col-sm">
           <ProcessStatusCard :statusUpdates="process.statusUpdates" />
-          <div v-if="sign">
-            <br>
-            {{ process.citizens }}
-          </div>
         </div>
         <div class="col-sm">
           <a v-if="!sign" :href="'/konto/vorgang?id='+process.id" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Detailansicht</a>

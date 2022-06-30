@@ -47,6 +47,9 @@
                   <router-link to="/Konto/Vorgaenge" class="nav-link">
                     Vorgänge
                   </router-link>
+                  <router-link to="/Spenden" class="nav-link">
+                    Spenden
+                  </router-link>
                 </li>
               </ul>
             </li>

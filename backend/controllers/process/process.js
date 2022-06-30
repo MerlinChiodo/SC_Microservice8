@@ -48,7 +48,7 @@ const getProcess = async (req,res) => {
             statusUpdates: {orderBy: [{date: 'asc',}]}
         },
     });
-    if(auth.auth(req.headers.token, auth.accessLevels.citizen, result.customer)){
+    if(await auth.auth(req.headers.token, auth.accessLevels.citizen, result.customer)){
         if(result){
             return res.status(200).json({ message: "Found the process", process: result });
         }
@@ -101,7 +101,7 @@ const deleteProcess = async (req, res) => {
             worker: true
         },
     });
-    if(auth.auth(req.headers.token, auth.accessLevels.worker, result.citizens.id)){
+    if(await auth.auth(req.headers.token, auth.accessLevels.worker, result.citizens.id)){
         const result = await prismaClient.process.delete({
             where: {
                 id: parseInt(req.params['id'])
@@ -130,7 +130,7 @@ const editProcess = async (req, res) => {
             worker: true
         },
     });
-    if(auth.auth(req.headers.token, auth.accessLevels.worker, result.citizens.id)){
+    if(await auth.auth(req.headers.token, auth.accessLevels.worker, result.citizens.id)){
         try{
             const result = await prismaClient.process.update({
                 where: {
