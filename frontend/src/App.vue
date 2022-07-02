@@ -180,7 +180,7 @@ export default {
   components: {},
   methods: {
       logout(){
-        this.$cookies.remove('user_session_token', { path: '/', domain: '.supersmartcity.de' });
+        this.$cookies.remove('user_session_token', '/','supersmartcity.de');
         this.$cookies.remove('fm_token');
         this.$forceUpdate();
       },
