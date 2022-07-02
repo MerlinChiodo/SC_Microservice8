@@ -12,7 +12,6 @@ export default {
   },
   methods: {
       process_login(){
-        this.$cookies.set("user_session_token", this.$route.query.token, "1h");
         window.location.href = window.location.protocol + '//' + window.location.host + this.$route.params.destination;
       }
   },
