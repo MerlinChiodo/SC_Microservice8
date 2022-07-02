@@ -129,9 +129,9 @@ export default {
     return {
       error: null,
       message: null,
-      crmessage: "Nachricht",
-      crname: "Name",
-      cremail: "email",
+      crmessage: null,
+      crname: null,
+      cremail: null,
       crconsent: false
     };
   },

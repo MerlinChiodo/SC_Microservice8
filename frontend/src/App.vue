@@ -130,7 +130,7 @@
     <!-- Footer -->
     <footer
       class="mt-auto page-footer font-small purple pt-4"
-      style="background: linear-gradient(330deg,rgba(2, 0, 36, 1) 0%,rgba(2, 0, 36, 1) 23%,rgba(255, 255, 255, 1) 23%);"
+      style="background: linear-gradient(330deg,rgba(2, 0, 36, 1) 0%,rgba(2, 0, 36, 1) 33%,rgba(255, 255, 255, 1) 33%);"
     >
       <!-- Footer Links -->
       <div class="container-fluid text-center text-md-left">
@@ -156,9 +156,9 @@
 
           <!-- Footer Column 3 -->
           <div class="col-md-3 mb-md-0 mb-3">
-            <router-link to="/Kontakt" class="nav-link"> Kontakt </router-link>
-            <router-link to="/Upload" class="nav-link"> Dateien einreichen </router-link>
-            <router-link to="/intern/overview" class="nav-link"> Mitarbeiterbereich </router-link>
+            <router-link to="/Kontakt" class="nav-link link-light"> Kontakt </router-link>
+            <router-link to="/Upload" class="nav-link link-light"> Dateien einreichen </router-link>
+            <router-link to="/intern/overview" class="nav-link link-light"> Mitarbeiterbereich </router-link>
           </div>
         </div>
         <!-- End Footer row 1 -->
@@ -167,7 +167,7 @@
       <!-- Copyright -->
       <div class="footer-copyright text-center py-3">
         © 2022 Copyright:
-        <a href="http://supersmartcity.de">supersmartcity.de</a>
+        <a class="link-dark" href="http://supersmartcity.de">supersmartcity.de</a>
       </div>
       <!-- Copyright -->
     </footer>
