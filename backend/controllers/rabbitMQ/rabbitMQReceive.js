@@ -218,7 +218,6 @@ module.exports = {
                     validator(item, CitizenDeathSchema, citizenDeath);
                     break;
                 default:
-                    storeFaultyEvent(item.event_id, item)
                     console.log(item);
                     break;
             }
