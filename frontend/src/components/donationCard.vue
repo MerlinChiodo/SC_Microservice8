@@ -17,7 +17,10 @@
             <tr v-for="item in allDonations" :key="item.id">
                 <td>{{item.amount}}</td>
                 <td>{{item.companies.name}}</td>
-                <td>{{item.donator}}</td>
+                <td>
+                  <p v-if="!this.$cookies.isKey('fm_token')">Ich (ID: {{item.donator}})</p>
+                  <a v-else :href="'/intern/vorgaenge/'+item.donator" class="btn btn-primary active" role="button" aria-pressed="true">{{item.donator}}</a>
+                  </td>
                 <td>{{item.reason}}</td>
                 <td>{{item.purpose}}</td>
                 <td>{{isoDateToString(item.date)}}</td>

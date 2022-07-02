@@ -114,6 +114,9 @@ const finanzamtUtils = {
         if(response.status == 401){
           throw Error("Auth. required");
         }
+        if(response.status == 422){
+          return -1;
+        }
         return response.json()
       })
       .then((data) => {
