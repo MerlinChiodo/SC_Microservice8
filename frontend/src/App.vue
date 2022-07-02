@@ -38,7 +38,7 @@
                 Aktuelles
               </router-link>
             </li>
-            <li class="nav-item dropdown" v-if="this.$cookies.isKey('f_token') && !this.$cookies.isKey('fm_token')">
+            <li class="nav-item dropdown" v-if="this.$cookies.isKey('user_session_token') && !this.$cookies.isKey('fm_token')">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 Konto
               </a>
@@ -76,7 +76,7 @@
               </ul>
             </li>
           </ul>
-          <form class="d-flex" v-if="!this.$cookies.isKey('f_token') && !this.$cookies.isKey('fm_token')">
+          <form class="d-flex" v-if="!this.$cookies.isKey('user_session_token') && !this.$cookies.isKey('fm_token')">
             <button class="btn btn-outline-success" type="button" @click="this.login()">Login</button>
           </form>
           <form class="d-flex" v-else>
@@ -180,7 +180,7 @@ export default {
   components: {},
   methods: {
       logout(){
-        this.$cookies.remove('f_token');
+        this.$cookies.remove('user_session_token');
         this.$cookies.remove('fm_token');
         this.$forceUpdate();
       },
