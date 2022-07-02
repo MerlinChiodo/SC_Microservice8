@@ -59,6 +59,11 @@
               </a>
               <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <li class="nav-item">
+                  <router-link to="/Intern/overview" class="nav-link">
+                    Übersicht
+                  </router-link>
+                </li>
+                <li class="nav-item">
                   <router-link to="/Intern/Landingpage" class="nav-link">
                     Landingpage
                   </router-link>
@@ -181,6 +186,7 @@ export default {
   methods: {
       logout(){
         this.$cookies.remove('user_session_token', '/','supersmartcity.de');
+        this.$cookies.remove('user_session_token');
         this.$cookies.remove('fm_token');
         this.$forceUpdate();
       },
