@@ -43,7 +43,8 @@
             <p class="text-center">Der Vorgang wurde erfolgreich erstellt</p>
             <br><br>
             <div class="d-flex justify-content-center btn-group-vertical">
-                <button type="button" class="btn btn-primary btn-lg btn-block" @click="$router.push('/Konto/Vorgaenge')">Zu meinen Vorgängen</button>
+                <button v-if="!this.customer" type="button" class="btn btn-primary btn-lg btn-block" @click="$router.push('/Konto/Vorgaenge')">Zu meinen Vorgängen</button>
+                <button v-else type="button" class="btn btn-primary btn-lg btn-block" @click="$router.push('/Intern/Overview')">Zurück zur Übersicht</button>
             </div>
             <br>
         </div>
@@ -65,10 +66,14 @@ export default {
       year: 0,
       state: 0,
       processType: 1,
-      processTypes: null
+      processTypes: null,
+      customer: null
     };
   },
   mounted: function () {
+    if(this.$route.params.customer.length>0){
+      this.customer = this.$route.params.customer
+    }
     this.getProcessTypes();
   },
   methods: {
@@ -86,6 +91,9 @@ export default {
                 dateOffset: this.year,
                 type: this.processType
             };
+      if(this.customer){
+        body.customer = this.customer;
+      }
       let data = await this.fetch_post({} ,body, "/api/process/" );
       if(data){
         this.$notify({group: "success",title: "Erfolg!",text: "Vorgang erfolgreich erstellt",},2000);

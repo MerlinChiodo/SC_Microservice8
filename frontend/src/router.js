@@ -82,7 +82,7 @@ const routes = [
     component: Operation,
   },
   {
-    path: "/Konto/Neuer_Vorgang",
+    path: "/Konto/Neuer_Vorgang/:customer?",
     name: "Neuer Vorgang",
     component: newOperation,
   },

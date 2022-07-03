@@ -49,7 +49,7 @@
             aria-expanded="false"
             aria-controls="collapseTwo"
           >
-            Der Fehler trat während der navigation auf
+            Der Fehler trat während der Navigation auf
           </button>
         </h2>
         <div
