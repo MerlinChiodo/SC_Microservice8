@@ -31,7 +31,9 @@ async function getCitizenDetails(citizenId) {
         name: data.firstname,
         lastname: data.lastname,
         email: data.email,
-        birthday: data.birthdate
+        birthday: data.birthdate,
+        spouse_id: data.spouse_id,
+        child_ids: data.child_ids
     };
 }
 
@@ -47,7 +49,7 @@ function validator(event, schema, callback) {
 }
 
 async function processNewCitizen(event) {
-    citizen = await getCitizenDetails(event.citizen_id);
+    let citizen = await getCitizenDetails(event.citizen_id);
     await fetch('http://localhost:3000/api/citizen', { method: 'POST', body: JSON.stringify(citizen), headers: { 'token': secret, 'Content-Type': "application/json" } })
         .then(response => {
             if (response.status === 201) {
@@ -56,7 +58,18 @@ async function processNewCitizen(event) {
                 // Faulty citizen (wrong content)
                 storeFaultyEvent(1001, event).then(console.log("Faulty citizen"))
             }
-        });
+        }); 
+    if(citizen.spouse_id != null){
+        citizen1 = await getAllCitizenDetails(event.citizen_id);
+        citizen2 = await getAllCitizenDetails(citizen.spouse_id);
+        try {
+            let childs = citizen1.child_ids.concat(citizen2.child_ids);
+            await marry(citizen1.citizen_id, citizen2.citizen_id, childs);
+            console.log("Marriage was successful");
+        } catch (err) {
+            console.log("Marriage failed");
+        }
+    }
 }
 
 async function updateCitizen(event) {
@@ -84,17 +97,22 @@ async function updateCitizen(event) {
     }
 }
 
+async function marry(partner1, partner2, childs){
+    await prismaClient.couples.create({
+        data: {
+            partner1: partner1,
+            partner2: partner2,
+            child_amount: [...new Set(childs)].length
+        }
+    });
+}
+
 async function citizenMarriage(event) {
     citizen1 = await getAllCitizenDetails(event.partners.citizen_id_1);
     citizen2 = await getAllCitizenDetails(event.partners.citizen_id_2);
     try {
-        await prismaClient.couples.create({
-            data: {
-                partner1: citizen1.citizen_id,
-                partner2: citizen2.citizen_id,
-                child_amount: Object.keys(citizen2.child_ids).length + Object.keys(citizen1.child_ids).length
-            }
-        });
+        let childs = citizen1.child_ids.concat(citizen2.child_ids);
+        await marry(citizen1.citizen_id, citizen2.citizen_id, childs);
         console.log("Marriage was successful");
     } catch (err) {
         storeFaultyEvent(event.event_id, event);
@@ -218,7 +236,6 @@ module.exports = {
                     validator(item, CitizenDeathSchema, citizenDeath);
                     break;
                 default:
-                    storeFaultyEvent(item.event_id, item)
                     console.log(item);
                     break;
             }

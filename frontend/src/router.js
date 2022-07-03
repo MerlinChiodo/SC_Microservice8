@@ -5,6 +5,7 @@ import News from "./views/blog.vue"
 import Forms from "./views/forms.vue"
 import Upload from "./views/upload.vue"
 import Login from "./views/login.vue"
+import Error from "./views/error.vue"
 import AdminLogin from "./views/adminLogin.vue"
 const Contact = () => import("./views/contact.vue")
 const Submit = () => import("./views/account/submit.vue")
@@ -51,6 +52,11 @@ const routes = [
     component: AdminLogin,
   },
   {
+    path: "/error",
+    name: "Error",
+    component: Error,
+  },
+  {
     path: "/Kontakt",
     name: "Kontakt",
     component: Contact,
@@ -76,7 +82,7 @@ const routes = [
     component: Operation,
   },
   {
-    path: "/Konto/Neuer_Vorgang",
+    path: "/Konto/Neuer_Vorgang/:customer?",
     name: "Neuer Vorgang",
     component: newOperation,
   },

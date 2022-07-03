@@ -70,7 +70,7 @@ export default {
                 description: this.descr
             };
         let data = await this.fetch_post({} , body, "/api/deadline/" );
-        if(data){
+        if(data && data!=-1){
           this.$router.go();
         }else{
           this.$notify({group: "error",title: "Fehler!",text: "Da ist etwas schiefgelaufen",},2000);

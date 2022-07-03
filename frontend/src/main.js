@@ -15,7 +15,7 @@ const finanzamtUtils = {
         if(app.$cookies.isKey("fm_token")){
           return app.$cookies.get("fm_token");
         }
-        return app.$cookies.get("f_token");
+        return app.$cookies.get("user_session_token");
     };
     app.config.globalProperties.initLogin = () => {
       let page_url = window.location.protocol + '//' + window.location.host;
@@ -113,6 +113,9 @@ const finanzamtUtils = {
       .then((response) => {
         if(response.status == 401){
           throw Error("Auth. required");
+        }
+        if(response.status == 422){
+          return -1;
         }
         return response.json()
       })
