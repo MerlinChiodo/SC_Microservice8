@@ -8,14 +8,19 @@ const createProcess = async (req, res) => {
     if(!errors.isEmpty()){
         return res.status(422).json({ errors: errors.array()[0] });
     }
-    let userID = await auth.auth(req.headers.token, auth.accessLevels.citizen)
+    let userID = -1;
+    if(req.body.customer){
+        userID = await auth.auth(req.headers.token, auth.accessLevels.citizen, req.body.customer)
+    }else{
+        userID = await auth.auth(req.headers.token, auth.accessLevels.citizen)
+    }
     if(userID > 0){
         date = new Date()
         date.setFullYear(date.getFullYear() - req.body.dateOffset);
         const result = await prismaClient.process.create({
             data: {
                 type: parseInt(req.body.type),
-                customer: userID,
+                customer: parseInt(userID),
                 official: req.body.official ? parseInt(req.body.official) : 0,
                 date: date
             }
@@ -31,6 +36,28 @@ const createProcess = async (req, res) => {
         return res.status(401).json({ message: "Sorry, you have no rights to do this" });
     } 
 }
+
+async function getRelationship(citizenID){
+    console.log("CID ",citizenID);
+    const result = await prismaClient.couples.findMany({
+        where: {
+            OR: [
+                { partner1: { equals: citizenID } },
+                { partner2: { equals: citizenID } }
+              ]
+        },
+        include:{
+            citizens_citizensTocouples_partner1: true,
+            citizens_citizensTocouples_partner2: true,
+        },
+        orderBy: [{date: 'desc',}]
+    })
+    if(result){
+        return result[0]
+    }else{
+        return null
+    }
+};
 
 const getProcess = async (req,res) => {
     const errors = validationResult(req);
@@ -50,7 +77,7 @@ const getProcess = async (req,res) => {
     });
     if(await auth.auth(req.headers.token, auth.accessLevels.citizen, result.customer)){
         if(result){
-            return res.status(200).json({ message: "Found the process", process: result });
+            return res.status(200).json({ message: "Found the process", process: result, relationship: await getRelationship(result.customer) });
         }
         return res.status(404).json({ message: "Could not find this process" });
     }else{
@@ -80,7 +107,7 @@ const getAllProcesses = async (req,res) => {
         if(result.length == 0){
             return res.status(404).json({ message: "No processes were found", result:[] });
         }else{
-            return res.status(200).json({ message: result.length+" processes were found", result });
+            return res.status(200).json({ message: result.length+" processes were found", result, relationship: await getRelationship(result[0].customer) });
         }
     }else{
         return res.status(401).json({ message: "Sorry, you have no rights to do this" });
